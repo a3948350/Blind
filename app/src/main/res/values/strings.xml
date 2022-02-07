@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Blind</string>
+    <string name="main_Greeting">您好，欢迎使用</string>
+    <string name="main_Call">拨打电话</string>
+    <string name="call_Call">拨打</string>
+    <string name="call_Hint">请输入手机号</string>
+    <string name="main_Send">发送信息</string>
+    <string name="send_Choose">选择联系人</string>
+    <string name="main_RecognizeResult">识别结果</string>
+    <string name="start_record">识别状态：开始录音</string>
+    <string name="end_record">识别状态：停止录音</string>
+    <string name="start_recognize">识别状态：语音流识别开始</string>
+    <string name="end_recognize">识别状态：语音流识别结束</string>
+    <string name="start_voice">识别状态：语音流开始</string>
+    <string name="end_voice">识别状态：语音流结束</string>
+    <string name="start_voice_timeout">识别状态：开始说话超时</string>
+    <string name="end_voice_timeout">识别状态：开始说话超时</string>
+    <string name="cant_stop">识别状态：不存在该任务，无法取消</string>
+    <string name="send_Content">请输入短信内容</string>
+    <string name="send_Send">发送</string>
+    <string name="app_recognize">识别</string>
+    <!-- Strings used for fragments for navigation -->
+
+</resources>
