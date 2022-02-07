@@ -38,6 +38,8 @@ public class test extends AppCompatActivity implements QCloudOneSentenceRecogniz
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.RECORD_AUDIO};
 
+    YCM ycm = new YCM();
+
 
 
     @Override
@@ -50,7 +52,7 @@ public class test extends AppCompatActivity implements QCloudOneSentenceRecogniz
         }
 
         btn_Test = findViewById(R.id.btn_Test);
-        QCloudOneSentenceRecognizer recognizer = new QCloudOneSentenceRecognizer(this, String.valueOf(1307538305),"AKIDxjETR8ZibDYcPQAdplQtAD1ZruhEVWIo","HH2vb080bvykFTP6WeV5OQBfusZz91cw");
+        QCloudOneSentenceRecognizer recognizer = new QCloudOneSentenceRecognizer(this, String.valueOf(1307538305),ycm.getSecretId(),ycm.getSecretKey());
 
         recognizer.setCallback(this);
 

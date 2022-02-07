@@ -103,6 +103,8 @@ public class SendActivity extends AppCompatActivity {
     //  语音合成播报内容
     String texts = "";
 
+    YCM ycm = new YCM();
+
     private void checkPermissions() {
 
         List<String> permissions = new LinkedList<>();
@@ -158,8 +160,8 @@ public class SendActivity extends AppCompatActivity {
 
         //设置ProjectId 不设置默认使用0，说明：项目功能用于按项目管理云资源，可以对云资源进行分项目管理，详情见 https://console.cloud.tencent.com/project
         final int projectId = 0;
-        final String secretId = "AKIDxjETR8ZibDYcPQAdplQtAD1ZruhEVWIo";
-        final String secretKey = "HH2vb080bvykFTP6WeV5OQBfusZz91cw";
+        final String secretId = ycm.getSecretId();
+        final String secretKey = ycm.getSecretKey();
 
         AAILogger.info(logger, "config : appid={}, projectId={}, secretId={}, secretKey={}", appid, projectId, secretId, secretKey);
         // 签名鉴权类，sdk中给出了一个本地的鉴权类，但由于需要用户提供secretKey，这可能会导致一些安全上的问题，
