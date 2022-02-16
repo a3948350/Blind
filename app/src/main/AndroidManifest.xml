@@ -93,6 +93,7 @@
         <meta-data
             android:name="TencentMapSDK"
             android:value="INCBZ-74IEJ-RAXFF-F3VRZ-Q6W5F-ZFF5I" />
+
     </application>
 
 </manifest>
