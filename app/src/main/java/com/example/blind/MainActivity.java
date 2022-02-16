@@ -745,6 +745,7 @@ public class MainActivity extends AppCompatActivity {
     private void orderRead(String order) {
         String orderCallActivity = "打电话";
         String orderSendActivity = "发短信";
+        String orderNavigationActivity = "导航";
         String result = Util.str2HexStr(order);
 
         if(result == null) {
@@ -764,6 +765,13 @@ public class MainActivity extends AppCompatActivity {
                 Intent intentSendActivity = new Intent(MainActivity.this, SendActivity.class);
                 startActivity(intentSendActivity);
                 texts = "跳转至语音短信，请先输入电话号码";
+                mTts.startSpeaking(texts, mSynListener);
+            }
+
+            else if(orderNavigationActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
+                Intent intentSendActivity = new Intent(MainActivity.this, NavigationActivity.class);
+                startActivity(intentSendActivity);
+                texts = "跳转至地图导航";
                 mTts.startSpeaking(texts, mSynListener);
             }
 
