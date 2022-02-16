@@ -19,6 +19,7 @@
     <string name="send_Content">请输入短信内容</string>
     <string name="send_Send">发送</string>
     <string name="app_recognize">识别</string>
+    <string name="main_Navigation">地图导航</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn_CallActivity;
     Button btn_SendActivity;
     Button btn_Recognize;
+    Button btn_Navigation;
     TextView recognizeResult;
     TextView recognizeState;
 
@@ -555,6 +556,15 @@ public class MainActivity extends AppCompatActivity {
                 texts = "请输入指令";
                 //starSpeech();
                 mTts.startSpeaking(texts, mSynListener);
+            }
+        });
+
+        btn_Navigation = findViewById(R.id.btn_Navigation);
+        btn_Navigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentActivityNavigation = new Intent(MainActivity.this, NavigationActivity.class);
+                startActivity(intentActivityNavigation);
             }
         });
 
