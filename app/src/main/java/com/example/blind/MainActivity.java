@@ -744,7 +744,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void orderRead(String order) {
         String orderCallActivity = "打电话";
+        String orderCallActivity2 = "打个电话";
+        String orderCallActivity3 = "拨打电话";
         String orderSendActivity = "发短信";
+        String orderSendActivity2 = "发送短信";
         String orderNavigationActivity = "导航";
         String result = Util.str2HexStr(order);
 
@@ -754,14 +757,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else {
-            if(orderCallActivity.equals(Util.hexStr2Str(result.substring(0,result.length()-4)))) {
+            if( (orderCallActivity.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
+                    || (  orderCallActivity2.equals(Util.hexStr2Str(result.substring(0,result.length()-4))) )
+                    || ( orderCallActivity3.equals(Util.hexStr2Str(result.substring(0,result.length()-4))) ) ) {
                 Intent intentCallActivity = new Intent(MainActivity.this, CallActivity.class);
-                texts = "跳转至语音拨打，请输入需要拨打手机号码";
+                texts = "跳转至语音拨打，请输入需要拨打的手机号码";
                 mTts.startSpeaking(texts, mSynListener);
                 startActivity(intentCallActivity);
             }
 
-            else if(orderSendActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
+            else if(  (orderSendActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4))))
+            || (orderSendActivity2.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) ) {
                 Intent intentSendActivity = new Intent(MainActivity.this, SendActivity.class);
                 startActivity(intentSendActivity);
                 texts = "跳转至语音短信，请先输入电话号码";

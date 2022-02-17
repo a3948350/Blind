@@ -645,6 +645,7 @@ public class CallActivity extends AppCompatActivity {
 
     private void orderRead(String order) {
         String orderYes = "是";
+        String orderYes2 = "是的";
         String orderNo = "否";
         String orderBack = "返回";
         String result = Util.str2HexStr(order);
@@ -668,7 +669,8 @@ public class CallActivity extends AppCompatActivity {
                 mTts.startSpeaking(texts, mSynListener);
                 step = 1;
             }
-            else if(step == 2 && orderYes.equals(Util.hexStr2Str(result.substring(0,result.length()-4)))) {
+            else if(  (step == 2 && orderYes.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
+                    || (step == 2 && orderYes2.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))  ) {
                 //第一步，判断用户是否给应用授权了
                 //借助ContextCompat.checkSelfPermission()方法
                 //该方法接收两个参数一个是上下文，没什么好说的。
