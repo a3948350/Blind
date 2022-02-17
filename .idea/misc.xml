@@ -3,12 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Blind/app/src/main/res/layout/activity_call.xml" value="0.20697463768115942" />
+        <entry key="..\:/Blind/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Blind/app/src/main/res/layout/activity_navigation.xml" value="0.25364583333333335" />
+        <entry key="..\:/Blind/app/src/main/res/layout/activity_send.xml" value="0.18206521739130435" />
+        <entry key="..\:/Blind/app/src/main/res/layout/activity_test.xml" value="0.18333333333333332" />
+        <entry key="..\:/Blind/app/src/main/res/layout/activity_weather.xml" value="0.25364583333333335" />
         <entry key="..\:/android/andorid_project/app/src/main/res/drawable/list_bg_color.xml" value="0.23958333333333334" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_call.xml" value="0.36614583333333334" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_face_identify.xml" value="0.2234375" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_main.xml" value="0.3515625" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_main2.xml" value="0.33559782608695654" />
-        <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_navigation.xml" value="0.33" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_send.xml" value="0.36614583333333334" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_test.xml" value="0.36614583333333334" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/content_main.xml" value="0.2046875" />
@@ -18,7 +23,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15_PREVIEW" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
