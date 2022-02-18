@@ -1,6 +1,8 @@
 package com.example.blind;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -53,11 +55,14 @@ public class MusicActivity extends AppCompatActivity {
                 name.setText(musics.get(i).getTitle());
                 TextView player = findViewById(R.id.music_player);
                 player.setText(musics.get(i).getSinger());
-
                 m_music_player = new MediaPlayer();
-                m_music_player.setDataSource(path);
+                AssetManager am = getAssets();
+                AssetFileDescriptor afd = am.openFd(String.valueOf(musics.get(i).getFileName()));
+                Log.e("music", afd.getFileDescriptor().toString());
+                m_music_player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
                 m_music_player.prepare();
                 m_music_player.start();
+
             }catch (Exception e){
                 e.printStackTrace();
             }
