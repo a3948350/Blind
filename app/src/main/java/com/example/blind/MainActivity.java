@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn_SendActivity;
     Button btn_Recognize;
     Button btn_Navigation;
+    Button btn_Music;
     TextView recognizeResult;
     TextView recognizeState;
 
@@ -568,94 +569,118 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btn_Music = findViewById(R.id.btn_Music);
+        btn_Music.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,MusicActivity.class);
+                startActivity(intent);
+            }
+        });
+
         btn_Recognize = findViewById(R.id.btn_Recognize);
         btn_Recognize.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (aaiClient!=null) {
-                        boolean taskExist = aaiClient.cancelAudioRecognize(currentRequestId);
-                        AAILogger.info(logger, "taskExist=" + taskExist);
-                    }
-
-                    AAILogger.info(logger, "the start button has clicked..");
-                    resMap.clear();
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            //   start.setEnabled(false);
-                        }
-                    });
-                    AudioRecognizeRequest.Builder builder = new AudioRecognizeRequest.Builder();
-                    isSaveAudioRecordFiles=false;//默认是关的 false
-                    // 初始化识别请求
-                    final AudioRecognizeRequest audioRecognizeRequest = builder
-//                        .pcmAudioDataSource(new AudioRecordDataSource()) // 设置数据源
-                            .pcmAudioDataSource(new AudioRecordDataSource(isSaveAudioRecordFiles)) // 设置数据源
-                            //.templateName(templateName) // 设置模板
-                            .template(new AudioRecognizeTemplate(EngineModelType.EngineModelType16K.getType(),0)) // 设置自定义模板
-                            .setFilterDirty(0)  // 0 ：默认状态 不过滤脏话 1：过滤脏话
-                            .setFilterModal(0) // 0 ：默认状态 不过滤语气词  1：过滤部分语气词 2:严格过滤
-                            .setFilterPunc(1) // 0 ：默认状态 不过滤句末的句号 1：滤句末的句号
-                            .setConvert_num_mode(1) //1：默认状态 根据场景智能转换为阿拉伯数字；0：全部转为中文数字。
-//                        .setVadSilenceTime(1000) // 语音断句检测阈值，静音时长超过该阈值会被认为断句（多用在智能客服场景，需配合 needvad = 1 使用） 默认不传递该参数
-                            .setNeedvad(0) //0：关闭 vad，1：默认状态 开启 vad。
-//                        .setHotWordId("")//热词 id。用于调用对应的热词表，如果在调用语音识别服务时，不进行单独的热词 id 设置，自动生效默认热词；如果进行了单独的热词 id 设置，那么将生效单独设置的热词 id。
-                            .build();
-                    // 自定义识别配置
-                    final AudioRecognizeConfiguration audioRecognizeConfiguration = new AudioRecognizeConfiguration.Builder()
-                            .setSilentDetectTimeOut(true)// 是否使能静音检测，true表示不检查静音部分
-                            .audioFlowSilenceTimeOut(1000) // 静音检测超时停止录音
-                            .minAudioFlowSilenceTime(1000) // 语音流识别时的间隔时间
-                            .minVolumeCallbackTime(80) // 音量回调时间
-                            .build();
-                    //currentRequestId = audioRecognizeRequest.getRequestId();
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (switchToDeviceAuth) {
-                                aaiClient.startAudioRecognizeForDevice(audioRecognizeRequest,
-                                        audioRecognizeResultlistener,
-                                        audioRecognizeStateListener,
-                                        audioRecognizeTimeoutListener,
-                                        audioRecognizeConfiguration);
-                            } else {
-                                aaiClient.startAudioRecognize(audioRecognizeRequest,
-                                        audioRecognizeResultlistener,
-                                        audioRecognizeStateListener,
-                                        audioRecognizeTimeoutListener,
-                                        audioRecognizeConfiguration);
-                            }
-                        }
-                    }).start();
+                    buttonDown(audioRecognizeResultlistener,audioRecognizeStateListener,audioRecognizeTimeoutListener);
                 }
                 else if(event.getAction() == MotionEvent.ACTION_UP) {
-                    AAILogger.info(logger, "stop button is clicked..");
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            boolean taskExist = false;
-                            if (aaiClient!=null) {
-                                taskExist = aaiClient.stopAudioRecognize(currentRequestId);
-                            }
-                            if (!taskExist) {
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        recognizeState.setText(getString(R.string.cant_stop));
-                                    }
-                                });
-                            }
-                        }
-                    }).start();
-                    Toast.makeText(MainActivity.this,recognizeResult.getText().toString(),Toast.LENGTH_SHORT).show();
-
-                    orderRead(recognizeResult.getText().toString());
+                    buttonUp();
+                    try {
+                        Thread.currentThread().sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    String msg = buildMessage(resMap);
+                    Log.e("ycm", "结果" + msg);
+                    orderRead(msg);
                 }
+
                 return true;
             }
         });
 
+    }
+
+    private void buttonDown(AudioRecognizeResultListener audioRecognizeResultlistener,AudioRecognizeStateListener audioRecognizeStateListener,
+                            AudioRecognizeTimeoutListener audioRecognizeTimeoutListener) {
+        if (aaiClient!=null) {
+            boolean taskExist = aaiClient.cancelAudioRecognize(currentRequestId);
+            AAILogger.info(logger, "taskExist=" + taskExist);
+        }
+
+        AAILogger.info(logger, "the start button has clicked..");
+        resMap.clear();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                //   start.setEnabled(false);
+            }
+        });
+        AudioRecognizeRequest.Builder builder = new AudioRecognizeRequest.Builder();
+        isSaveAudioRecordFiles=false;//默认是关的 false
+        // 初始化识别请求
+        final AudioRecognizeRequest audioRecognizeRequest = builder
+//                        .pcmAudioDataSource(new AudioRecordDataSource()) // 设置数据源
+                .pcmAudioDataSource(new AudioRecordDataSource(isSaveAudioRecordFiles)) // 设置数据源
+                //.templateName(templateName) // 设置模板
+                .template(new AudioRecognizeTemplate(EngineModelType.EngineModelType16K.getType(),0)) // 设置自定义模板
+                .setFilterDirty(0)  // 0 ：默认状态 不过滤脏话 1：过滤脏话
+                .setFilterModal(0) // 0 ：默认状态 不过滤语气词  1：过滤部分语气词 2:严格过滤
+                .setFilterPunc(1) // 0 ：默认状态 不过滤句末的句号 1：滤句末的句号
+                .setConvert_num_mode(1) //1：默认状态 根据场景智能转换为阿拉伯数字；0：全部转为中文数字。
+//                        .setVadSilenceTime(1000) // 语音断句检测阈值，静音时长超过该阈值会被认为断句（多用在智能客服场景，需配合 needvad = 1 使用） 默认不传递该参数
+                .setNeedvad(0) //0：关闭 vad，1：默认状态 开启 vad。
+//                        .setHotWordId("")//热词 id。用于调用对应的热词表，如果在调用语音识别服务时，不进行单独的热词 id 设置，自动生效默认热词；如果进行了单独的热词 id 设置，那么将生效单独设置的热词 id。
+                .build();
+        // 自定义识别配置
+        final AudioRecognizeConfiguration audioRecognizeConfiguration = new AudioRecognizeConfiguration.Builder()
+                .setSilentDetectTimeOut(true)// 是否使能静音检测，true表示不检查静音部分
+                .audioFlowSilenceTimeOut(1000) // 静音检测超时停止录音
+                .minAudioFlowSilenceTime(1000) // 语音流识别时的间隔时间
+                .minVolumeCallbackTime(80) // 音量回调时间
+                .build();
+        //currentRequestId = audioRecognizeRequest.getRequestId();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (switchToDeviceAuth) {
+                    aaiClient.startAudioRecognizeForDevice(audioRecognizeRequest,
+                            audioRecognizeResultlistener,
+                            audioRecognizeStateListener,
+                            audioRecognizeTimeoutListener,
+                            audioRecognizeConfiguration);
+                } else {
+                    aaiClient.startAudioRecognize(audioRecognizeRequest,
+                            audioRecognizeResultlistener,
+                            audioRecognizeStateListener,
+                            audioRecognizeTimeoutListener,
+                            audioRecognizeConfiguration);
+                }
+            }
+        }).start();
+    }
+
+    private void buttonUp() {
+        AAILogger.info(logger, "stop button is clicked..");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean taskExist = false;
+                if (aaiClient!=null) {
+                    taskExist = aaiClient.stopAudioRecognize(currentRequestId);
+                }
+                if (!taskExist) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            recognizeState.setText(getString(R.string.cant_stop));
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 
 
@@ -742,7 +767,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void orderRead(String order) {
+    private void orderRead(String order)  {
         String orderCallActivity = "打电话";
         String orderCallActivity2 = "打个电话";
         String orderCallActivity3 = "拨打电话";
@@ -751,7 +776,7 @@ public class MainActivity extends AppCompatActivity {
         String orderNavigationActivity = "导航";
         String result = Util.str2HexStr(order);
 
-        if(result == null) {
+        if(result == null || result.length() < 4) {
             texts = "未听清楚命令，请重新输入";
             mTts.startSpeaking(texts, mSynListener);
         }
@@ -786,25 +811,6 @@ public class MainActivity extends AppCompatActivity {
                 mTts.startSpeaking(texts, mSynListener);
             }
         }
-
-//        if(orderCallActivity.equals(Util.hexStr2Str(result.substring(0,result.length()-4)))) {
-//            Intent intentCallActivity = new Intent(MainActivity.this, CallActivity.class);
-//            texts = "跳转成功，请输入需要拨打手机号码";
-//            mTts.startSpeaking(texts, mSynListener);
-//            startActivity(intentCallActivity);
-//        }
-//
-//        else if(orderSendActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
-//            Intent intentSendActivity = new Intent(MainActivity.this, SendActivity.class);
-//            startActivity(intentSendActivity);
-//            texts = "跳转成功，请先输入电话号码";
-//            mTts.startSpeaking(texts, mSynListener);
-//        }
-//
-//        else {
-//            texts = "未听清楚命令，请重新输入";
-//            mTts.startSpeaking(texts, mSynListener);
-//        }
 
     }
 

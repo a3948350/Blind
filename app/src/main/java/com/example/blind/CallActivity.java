@@ -554,7 +554,14 @@ public class CallActivity extends AppCompatActivity {
                 }
                 else if(event.getAction() == MotionEvent.ACTION_UP) {
                     buttonUp();
-                    orderRead(recognizeResult.getText().toString());
+                    try {
+                        Thread.currentThread().sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    String msg = buildMessage(resMap);
+                    Log.e("ycm", "结果" + msg);
+                    orderRead(msg);
                 }
                 return true;
             }
