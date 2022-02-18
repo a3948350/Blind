@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -49,7 +48,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.DataOutputStream;
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn_SendActivity;
     Button btn_Recognize;
     Button btn_Navigation;
+    Button btn_WeatherActivity;
     Button btn_Music;
     TextView recognizeResult;
     TextView recognizeState;
@@ -550,11 +549,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button button4 = findViewById(R.id.button4);
-        button4.setOnClickListener(new View.OnClickListener() {
+        btn_WeatherActivity = findViewById(R.id.btn_WeatherActivity);
+        btn_WeatherActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                texts = "请输入指令";
+                texts = "当前蚌埠市多云转晴";
                 //starSpeech();
                 mTts.startSpeaking(texts, mSynListener);
             }
@@ -767,13 +766,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void orderRead(String order)  {
+    private void orderRead(String order) {
         String orderCallActivity = "打电话";
         String orderCallActivity2 = "打个电话";
         String orderCallActivity3 = "拨打电话";
         String orderSendActivity = "发短信";
         String orderSendActivity2 = "发送短信";
         String orderNavigationActivity = "导航";
+        String orderWeatherActivity="天气";
+        String orderWeatherActivity2="天气预报";
         String result = Util.str2HexStr(order);
 
         if(result == null || result.length() < 4) {
@@ -796,6 +797,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intentSendActivity = new Intent(MainActivity.this, SendActivity.class);
                 startActivity(intentSendActivity);
                 texts = "跳转至语音短信，请先输入电话号码";
+                mTts.startSpeaking(texts, mSynListener);
+            }
+
+            else if(  (orderWeatherActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4))))
+                    || (orderWeatherActivity2.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) ) {
+                texts = "当前蚌埠市多云转晴";
                 mTts.startSpeaking(texts, mSynListener);
             }
 

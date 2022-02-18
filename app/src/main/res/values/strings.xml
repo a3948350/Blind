@@ -20,6 +20,7 @@
     <string name="send_Send">发送</string>
     <string name="app_recognize">识别</string>
     <string name="main_Navigation">地图导航</string>
+    <string name="main_Weather">天气播报</string>
     <string name="btn_back_name">返回</string>
     <string name="music_name">音乐名称</string>
     <string name="music_player_name">歌手</string>
