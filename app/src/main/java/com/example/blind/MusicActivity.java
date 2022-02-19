@@ -1,6 +1,9 @@
 package com.example.blind;
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.database.Cursor;
@@ -21,20 +24,58 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MusicActivity extends AppCompatActivity {
     private String[] music_name;
     private String[] music_player;
     private ArrayList<Song> musics;
     MediaPlayer m_music_player;
+
+    final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+
+    private void checkPermissions() {
+
+        List<String> permissions = new LinkedList<>();
+
+        addPermission(permissions, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        addPermission(permissions, Manifest.permission.READ_EXTERNAL_STORAGE);
+        addPermission(permissions, Manifest.permission.RECORD_AUDIO);
+        addPermission(permissions, Manifest.permission.INTERNET);
+        addPermission(permissions, Manifest.permission.READ_PHONE_STATE);
+        addPermission(permissions, Manifest.permission.SEND_SMS);
+        addPermission(permissions, Manifest.permission.READ_SMS);
+        addPermission(permissions, Manifest.permission.READ_CONTACTS);
+
+        if (!permissions.isEmpty()) {
+            ActivityCompat.requestPermissions(this, permissions.toArray(new String[permissions.size()]),
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }
+
+    }
+
+    private void addPermission(List<String> permissionList, String permission) {
+
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(permission);
+        }
+    }
+
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
+
+        checkPermissions();
 
         m_music_player = new MediaPlayer();
 
@@ -56,10 +97,8 @@ public class MusicActivity extends AppCompatActivity {
                 TextView player = findViewById(R.id.music_player);
                 player.setText(musics.get(i).getSinger());
                 m_music_player = new MediaPlayer();
-                AssetManager am = getAssets();
-                AssetFileDescriptor afd = am.openFd(String.valueOf(musics.get(i).getFileName()));
-                Log.e("music", afd.getFileDescriptor().toString());
-                m_music_player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                m_music_player.reset();
+                m_music_player.setDataSource(musics.get(i).getFileUrl());
                 m_music_player.prepare();
                 m_music_player.start();
 
@@ -107,8 +146,10 @@ public class MusicActivity extends AppCompatActivity {
                 song.setSinger(cursor.getString(i));
                 i = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME);
                 song.setFileName(cursor.getString(i));
-                song.setFileUrl(cursor.getString(1));
+                i = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+                song.setFileUrl(cursor.getString(i));
                 Log.d(song.getFileName(),"2");
+                Log.d(song.getFileName(), song.getFileUrl());
                 musics.add(song);
             }
             cursor.close();
