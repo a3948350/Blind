@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Blind/app/src/main/res/layout/activity_main.xml" value="0.21422101449275363" />
         <entry key="..\:/android/andorid_project/app/src/main/res/drawable/list_bg_color.xml" value="0.23958333333333334" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_call.xml" value="0.36614583333333334" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_face_identify.xml" value="0.2234375" />
@@ -20,7 +21,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15_PREVIEW" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

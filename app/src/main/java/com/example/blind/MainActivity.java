@@ -556,6 +556,7 @@ public class MainActivity extends AppCompatActivity {
                 texts = "当前蚌埠市多云转晴";
                 //starSpeech();
                 mTts.startSpeaking(texts, mSynListener);
+                String texts =null;
             }
         });
 
