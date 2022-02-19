@@ -3,6 +3,7 @@ package com.example.blind;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
@@ -14,10 +15,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +41,11 @@ public class MusicActivity extends AppCompatActivity {
     private String[] music_name;
     private String[] music_player;
     private ArrayList<Song> musics;
+    private int num = 0;
+    private int seq = 0;
+
     MediaPlayer m_music_player;
+    Button btn_MusicRecognize = null;
 
     final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
@@ -92,13 +100,13 @@ public class MusicActivity extends AppCompatActivity {
                 if(m_music_player.isPlaying()){
                     m_music_player.stop();
                 }
-                MyTextView name = findViewById(R.id.music_name);
-                name.setText(musics.get(i).getTitle());
-                TextView player = findViewById(R.id.music_player);
-                player.setText(musics.get(i).getSinger());
+//                MyTextView name = findViewById(R.id.music_name);
+//                name.setText(musics.get(i).getTitle());
+//                TextView player = findViewById(R.id.music_player);
+//                player.setText(musics.get(i).getSinger());
                 m_music_player = new MediaPlayer();
                 m_music_player.reset();
-                m_music_player.setDataSource(musics.get(i).getFileUrl());
+                m_music_player.setDataSource(path);
                 m_music_player.prepare();
                 m_music_player.start();
 
@@ -107,6 +115,109 @@ public class MusicActivity extends AppCompatActivity {
             }
 
         });
+
+        String path = musics.get(seq).getFileUrl();
+        m_music_player = new MediaPlayer();
+        try {
+            m_music_player.setDataSource(path);
+            m_music_player.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        GestureDetector gestureDetector = new GestureDetector(MusicActivity.this, new GestureDetector.SimpleOnGestureListener() {
+            /**
+             * 发生确定的单击时执行
+             * @param e
+             * @return
+             */
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {//单击事件暂停开始
+                Toast.makeText(MusicActivity.this,"这是单击事件", Toast.LENGTH_SHORT).show();
+                try {
+                    if(m_music_player.isPlaying()) {
+                        m_music_player.pause();
+                    }
+                    else {
+                        m_music_player.start();
+                    }
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                return super.onSingleTapConfirmed(e);
+            }
+
+            /**
+             * 双击发生时的通知
+             * @param e
+             * @return
+             */
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {//双击事件下一首
+                Toast.makeText(MusicActivity.this,"这是双击事件",Toast.LENGTH_SHORT).show();
+                if(seq <0 || seq >= num-1) {
+                    seq = 0;
+                    m_music_player.stop();
+                    m_music_player = new MediaPlayer();
+                    m_music_player.reset();
+                    String pa = musics.get(seq).getFileUrl();
+                    try {
+                        m_music_player.setDataSource(pa);
+                        m_music_player.prepare();
+                        m_music_player.start();
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+                else {
+                    m_music_player.stop();
+                    m_music_player = new MediaPlayer();
+                    m_music_player.reset();
+                    seq = seq + 1;
+                    String pa = musics.get(seq).getFileUrl();
+                    try {
+                        m_music_player.setDataSource(pa);
+                        m_music_player.prepare();
+                        m_music_player.start();
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+                return super.onDoubleTap(e);
+            }
+
+            /**
+             * 双击手势过程中发生的事件，包括按下、移动和抬起事件
+             * @param e
+             * @return
+             */
+            @Override
+            public void onLongPress(MotionEvent e) {//长按返回
+                m_music_player.stop();
+                Intent intentBack = new Intent(MusicActivity.this, MainActivity.class);
+                startActivity(intentBack);
+            }
+        });
+
+        btn_MusicRecognize = findViewById(R.id.btn_MusicRecognize);
+//        btn_MusicRecognize.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d("musicButton", "onClick: ");
+//            }
+//        });
+        btn_MusicRecognize.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                return gestureDetector.onTouchEvent(event);
+
+            }
+        });
+
+
 
     }
 
@@ -128,6 +239,8 @@ public class MusicActivity extends AppCompatActivity {
             music_player= new String[1];
             music_player[0] = "赵雷";
         }
+        num = musics.size();
+        Log.d("music", "歌曲数量：" + num);
     }
 
     public void getAllSongs(Context context) {

@@ -777,7 +777,7 @@ public class MainActivity extends AppCompatActivity {
         String orderWeatherActivity2="天气预报";
         String result = Util.str2HexStr(order);
 
-        if(result == null || result.length() < 4) {
+        if(result == null || result.length() <= 4) {
             texts = "未听清楚命令，请重新输入";
             mTts.startSpeaking(texts, mSynListener);
         }
