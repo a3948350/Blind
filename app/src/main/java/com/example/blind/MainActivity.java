@@ -553,10 +553,14 @@ public class MainActivity extends AppCompatActivity {
         btn_WeatherActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                texts = "当前蚌埠市多云转晴";
-                //starSpeech();
-                mTts.startSpeaking(texts, mSynListener);
-                String texts =null;
+//                texts = "当前蚌埠市多云转晴";
+                //starSpeech()
+                WeatherAPI wt = new WeatherAPI();
+                String test = wt.httpURLGETCase();
+                Log.d("Weather", "省份" + test);
+                mTts.startSpeaking(test, mSynListener);
+//                String texts2="呵呵哈哈哈";
+//                mTts.startSpeaking(texts2, mSynListener);
             }
         });
 
