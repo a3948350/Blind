@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -136,6 +137,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SpeechUtility.createUtility(this, SpeechConstant.APPID +"=8f27a48e");
         setContentView(R.layout.activity_main);
+
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         recognizeResult = findViewById(R.id.textViewMainRecognizeResult);
         recognizeState = findViewById(R.id.textViewMainRecognizeState);
@@ -556,11 +563,20 @@ public class MainActivity extends AppCompatActivity {
 //                texts = "当前蚌埠市多云转晴";
                 //starSpeech()
                 WeatherAPI wt = new WeatherAPI();
-                String test = wt.httpURLGETCase();
-                Log.d("Weather", "省份" + test);
-                mTts.startSpeaking(test, mSynListener);
-//                String texts2="呵呵哈哈哈";
-//                mTts.startSpeaking(texts2, mSynListener);
+                String text1 = wt.getProvince();
+                String text2 = wt.getCity();
+                String text3 = wt.getWeather();
+                String text4 = wt.getTemperature();
+                String text5 = wt.getWinddirection();
+                String text6 = wt.getWindpower();
+                String wait = ",";
+                String textweather = "天气为:";
+                String temperature = "温度为：";
+                String degree = "摄氏度";
+                String winddirection = "风向为：";
+                String windpower = "风力为：";
+                mTts.startSpeaking(text1+text2+wait+textweather+text3+wait+temperature+text4+degree+wait+winddirection+text5+wait+windpower+text6, mSynListener);
+
             }
         });
 
@@ -807,8 +823,20 @@ public class MainActivity extends AppCompatActivity {
 
             else if(  (orderWeatherActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4))))
                     || (orderWeatherActivity2.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) ) {
-                texts = "当前蚌埠市多云转晴";
-                mTts.startSpeaking(texts, mSynListener);
+                WeatherAPI wt = new WeatherAPI();
+                String text1 = wt.getProvince();
+                String text2 = wt.getCity();
+                String text3 = wt.getWeather();
+                String text4 = wt.getTemperature();
+                String text5 = wt.getWinddirection();
+                String text6 = wt.getWindpower();
+                String wait = ",";
+                String textweather = "天气为:";
+                String temperature = "温度为：";
+                String degree = "摄氏度";
+                String winddirection = "风向为：";
+                String windpower = "风力为：";
+                mTts.startSpeaking(text1+text2+wait+textweather+text3+wait+temperature+text4+degree+wait+winddirection+text5+wait+windpower+text6, mSynListener);
             }
 
             else if(orderNavigationActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
