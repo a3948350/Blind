@@ -8,9 +8,11 @@
 
     <Button
         android:id="@+id/btn_SendChoose"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:backgroundTint="#E6E6E6"
         android:text="@string/send_Choose"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,9 +20,11 @@
 
     <Button
         android:id="@+id/btn_SendSend"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:backgroundTint="#E6E6E6"
         android:text="@string/send_Send"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -29,10 +33,12 @@
 
     <Button
         android:id="@+id/btn_SendBack"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="32dp"
+        android:backgroundTint="#E6E6E6"
         android:text="返回"
         app:layout_constraintBottom_toTopOf="@+id/btn_SendRecognize"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,11 +90,13 @@
 
     <Button
         android:id="@+id/btn_SendRecognize"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="0dp"
-        android:layout_height="245dp"
+        android:layout_height="265dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
+        android:backgroundTint="#E6E6E6"
         android:text="@string/app_recognize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

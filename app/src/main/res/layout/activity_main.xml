@@ -8,11 +8,15 @@
 
     <Button
         android:id="@+id/btn_CallActivity"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="38dp"
+        android:backgroundTint="#E6E6E6"
         android:text="@string/main_Call"
+        android:textColor="#000000"
+        app:iconTint="#000000"
         app:layout_constraintEnd_toStartOf="@+id/btn_SendActivity"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,10 +24,12 @@
 
     <Button
         android:id="@+id/btn_SendActivity"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="16dp"
+        android:backgroundTint="#E6E6E6"
         android:text="@string/main_Send"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -32,11 +38,13 @@
 
     <Button
         android:id="@+id/button3"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="76dp"
-        android:text="Button"
+        android:backgroundTint="#E6E6E6"
+        android:text="@string/main_TimeDate"
         app:layout_constraintEnd_toStartOf="@+id/btn_WeatherActivity"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,10 +52,12 @@
 
     <Button
         android:id="@+id/btn_WeatherActivity"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
         android:layout_marginEnd="16dp"
+        android:backgroundTint="#E6E6E6"
         android:text="@string/main_Weather"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -92,11 +102,13 @@
 
     <Button
         android:id="@+id/btn_Recognize"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="0dp"
-        android:layout_height="245dp"
+        android:layout_height="265dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="#E6E6E6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -125,24 +137,28 @@
 
     <Button
         android:id="@+id/btn_Navigation"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="38dp"
+        android:backgroundTint="#E6E6E6"
         android:text="@string/main_Navigation"
         app:layout_constraintBottom_toTopOf="@+id/btn_Recognize"
         app:layout_constraintEnd_toStartOf="@+id/btn_Music"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button3"
-        app:layout_constraintVertical_bias="0.008" />
+        app:layout_constraintVertical_bias="0.009" />
 
     <Button
         android:id="@+id/btn_Music"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="16dp"
+        android:backgroundTint="#E6E6E6"
         android:text="@string/main_Music"
         app:layout_constraintBottom_toTopOf="@+id/btn_Recognize"
         app:layout_constraintEnd_toEndOf="parent"

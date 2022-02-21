@@ -25,6 +25,7 @@
     <string name="music_name">音乐名称</string>
     <string name="music_player_name">歌手</string>
     <string name="main_Music">播放音乐</string>
+    <string name="main_TimeDate">时间日期</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>
