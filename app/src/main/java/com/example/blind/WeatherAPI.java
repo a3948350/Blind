@@ -27,10 +27,16 @@ public class WeatherAPI {
 
     private static String province;
     private static String city;
-    private static String weather;
-    private static String temperature;
-    private static String winddirection;
-    private static String windpower;
+    //今日天气部分
+    private static String weathertaday;
+    private static String temperaturetaday;
+    private static String winddirectiontaday;
+    private static String windpowertaday;
+    //明日天气部分
+    private static String weathertomorrow;
+    private static String temperaturetomorrow;
+    private static String winddirectiontomorrow;
+    private static String windpowertomorrow;
     String getProvince(){
         httpURLGETCase();
         return province;
@@ -39,25 +45,53 @@ public class WeatherAPI {
         httpURLGETCase();
         return city;
     }
-    String getWeather(){
+
+
+
+    String gettadayWeather(){
         httpURLGETCase();
-        return weather;
+        return weathertaday;
     }
-    String getTemperature(){
+    String gettomorrowWeather(){
         httpURLGETCase();
-        return temperature;
+        return weathertomorrow;
     }
-    String getWinddirection(){
+
+
+
+    String gettadayTemperature(){
         httpURLGETCase();
-        return winddirection;
+        return temperaturetaday;
     }
-    String getWindpower(){
+    String gettomorrowTemperature(){
         httpURLGETCase();
-        return windpower;
+        return temperaturetomorrow;
+    }
+
+
+
+    String gettadayWinddirection(){
+        httpURLGETCase();
+        return winddirectiontaday;
+    }
+    String gettomorrowWinddirection(){
+        httpURLGETCase();
+        return winddirectiontomorrow;
+    }
+
+
+
+    String gettadayWindpower(){
+        httpURLGETCase();
+        return windpowertaday;
+    }
+    String gettomorrowWindpower(){
+        httpURLGETCase();
+        return windpowertomorrow;
     }
 
     private static void httpURLGETCase() {
-        String methodUrl = "http://restapi.amap.com/v3/weather/weatherInfo?key=ba3bcf7df9cfdb7bd0edf810ed98fb93&city=340321";
+        String methodUrl = "http://restapi.amap.com/v3/weather/weatherInfo?key=ba3bcf7df9cfdb7bd0edf810ed98fb93&city=340321&extensions=all";
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         String line = null;
@@ -79,21 +113,28 @@ public class WeatherAPI {
                 }
 
                 JSONObject mapTypes = JSON.parseObject(result.toString());
-                JSONObject lives = mapTypes.getJSONArray("lives").getJSONObject(0);
+                JSONObject forecasts = mapTypes.getJSONArray("forecasts").getJSONObject(0);
+                //casts1代表今天的天气数据
+                JSONObject casts1 = forecasts.getJSONArray("casts").getJSONObject(0);
+                //casts2代表明天的天气数据
+                JSONObject casts2 = forecasts.getJSONArray("casts").getJSONObject(1);
+
 
                 Log.d("yunxxxxx", "省份" + "1111111111");
-                province = lives.getString("province");
-                city = lives.getString("city");
-                weather = lives.getString("weather");
-                temperature = lives.getString("temperature");
-                winddirection = lives.getString("winddirection");
-                windpower = lives.getString("windpower");
+                province = forecasts.getString("province");
+                city = forecasts.getString("city");
 
-//                System.out.println(province);
-//                Integer adcode = lives.getInteger("adcode");
-////                System.out.println(adcode);
-//                String windpower = lives.getString("windpower");
-//                System.out.println(windpower);
+                //今日天气
+                weathertaday = casts1.getString("dayweather");
+                temperaturetaday = casts1.getString("daytemp");
+                winddirectiontaday = casts1.getString("daywind");
+                windpowertaday = casts1.getString("daypower");
+
+                //明日天气
+                weathertomorrow = casts2.getString("dayweather");
+                temperaturetomorrow = casts2.getString("daytemp");
+                winddirectiontomorrow = casts2.getString("daywind");
+                windpowertomorrow = casts2.getString("daypower");
 
             }
 
@@ -103,72 +144,6 @@ public class WeatherAPI {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

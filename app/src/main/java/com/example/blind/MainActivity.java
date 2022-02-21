@@ -560,22 +560,31 @@ public class MainActivity extends AppCompatActivity {
         btn_WeatherActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                texts = "当前蚌埠市多云转晴";
-                //starSpeech()
                 WeatherAPI wt = new WeatherAPI();
-                String text1 = wt.getProvince();
-                String text2 = wt.getCity();
-                String text3 = wt.getWeather();
-                String text4 = wt.getTemperature();
-                String text5 = wt.getWinddirection();
-                String text6 = wt.getWindpower();
-                String wait = ",";
+                String province = wt.getProvince();
+                String city = wt.getCity();
+
+                String weathertaday = wt.gettadayWeather();
+                String temperaturetaday= wt.gettadayTemperature();
+                String winddirectiontaday = wt.gettadayWinddirection();
+                String windpowertaday = wt.gettadayWindpower();
+
+                String weathertomorrow = wt.gettomorrowWeather();
+                String temperaturetomorrow = wt.gettomorrowTemperature();
+                String winddirectiontomorrow = wt.gettomorrowWinddirection();
+                String windpowertomorrow = wt.gettomorrowWindpower();
+
+                String taday = "今日：";
+                String tomorrow = "明日天气为：";
+                String wait = "。";
                 String textweather = "天气为:";
                 String temperature = "温度为：";
                 String degree = "摄氏度";
                 String winddirection = "风向为：";
                 String windpower = "风力为：";
-                mTts.startSpeaking(text1+text2+wait+textweather+text3+wait+temperature+text4+degree+wait+winddirection+text5+wait+windpower+text6, mSynListener);
+                String windpowerstrength = "级";
+                mTts.startSpeaking(province+city+taday+wait+textweather+weathertaday+wait+temperature+temperaturetaday+degree+wait+winddirection+winddirectiontaday+wait+windpower+windpowertaday+windpowerstrength
+                        +wait+tomorrow+weathertomorrow+wait+temperature+temperaturetomorrow+degree+wait+winddirection+winddirectiontomorrow+wait+windpower+windpowertomorrow+windpowerstrength, mSynListener);
 
             }
         });
@@ -824,19 +833,30 @@ public class MainActivity extends AppCompatActivity {
             else if(  (orderWeatherActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4))))
                     || (orderWeatherActivity2.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) ) {
                 WeatherAPI wt = new WeatherAPI();
-                String text1 = wt.getProvince();
-                String text2 = wt.getCity();
-                String text3 = wt.getWeather();
-                String text4 = wt.getTemperature();
-                String text5 = wt.getWinddirection();
-                String text6 = wt.getWindpower();
-                String wait = ",";
+                String province = wt.getProvince();
+                String city = wt.getCity();
+
+                String weathertaday = wt.gettadayWeather();
+                String temperaturetaday= wt.gettadayTemperature();
+                String winddirectiontaday = wt.gettadayWinddirection();
+                String windpowertaday = wt.gettadayWindpower();
+
+                String weathertomorrow = wt.gettomorrowWeather();
+                String temperaturetomorrow = wt.gettomorrowTemperature();
+                String winddirectiontomorrow = wt.gettomorrowWinddirection();
+                String windpowertomorrow = wt.gettomorrowWindpower();
+
+                String taday = "今日：";
+                String tomorrow = "明日天气为：";
+                String wait = "。";
                 String textweather = "天气为:";
                 String temperature = "温度为：";
                 String degree = "摄氏度";
                 String winddirection = "风向为：";
                 String windpower = "风力为：";
-                mTts.startSpeaking(text1+text2+wait+textweather+text3+wait+temperature+text4+degree+wait+winddirection+text5+wait+windpower+text6, mSynListener);
+                String windpowerstrength = "级";
+                mTts.startSpeaking(province+city+taday+wait+textweather+weathertaday+wait+temperature+temperaturetaday+degree+wait+winddirection+winddirectiontaday+wait+windpower+windpowertaday+windpowerstrength
+                        +wait+tomorrow+weathertomorrow+wait+temperature+temperaturetomorrow+degree+wait+winddirection+winddirectiontomorrow+wait+windpower+windpowertomorrow+windpowerstrength, mSynListener);
             }
 
             else if(orderNavigationActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
