@@ -32,11 +32,17 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 public class WeatherAPI {
-    public class MainActivity extends Activity {
+
+
+
+
+    public static class Getlocation extends Activity {
         //声明AMapLocationClient类对象
         public AMapLocationClient mLocationClient = null;
+
         //声明AMapLocationClientOption对象
         public AMapLocationClientOption mLocationOption = null;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -98,6 +104,10 @@ public class WeatherAPI {
             }
         };
     }
+
+
+
+
     private static String province;
     private static String city;
     //今日天气部分
