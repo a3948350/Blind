@@ -1,6 +1,7 @@
 package com.example.blind;
 
 
+
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -22,9 +23,81 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.net.URL;
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 public class WeatherAPI {
+    public class MainActivity extends Activity {
+        //声明AMapLocationClient类对象
+        public AMapLocationClient mLocationClient = null;
+        //声明AMapLocationClientOption对象
+        public AMapLocationClientOption mLocationOption = null;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
+            try {
+                mLocationClient = new AMapLocationClient(getApplicationContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mLocationClient.setLocationListener(mLocationListener);
+
+            mLocationOption = new AMapLocationClientOption();
+            //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+            //设置是否返回地址信息（默认返回地址信息）
+            mLocationOption.setNeedAddress(true);
+            //获取一次定位结果：
+            //该方法默认为false。
+            mLocationOption.setOnceLocation(true);
+            //设置是否允许模拟位置,默认为false，不允许模拟位置
+            mLocationOption.setMockEnable(false);
+
+            //给定位客户端对象设置定位参数
+            mLocationClient.setLocationOption(mLocationOption);
+            //启动定位
+            mLocationClient.startLocation();
+        }
+
+        //声明定位回调监听器
+        public AMapLocationListener mLocationListener = new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation amapLocation) {
+                if (amapLocation != null) {
+                    if (amapLocation.getErrorCode() == 0) {
+                        //定位成功回调信息，设置相关消息
+                        amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
+                        amapLocation.getLatitude();//获取纬度
+                        amapLocation.getLongitude();//获取经度
+                        amapLocation.getAccuracy();//获取精度信息
+                        amapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
+                        amapLocation.getCountry();//国家信息
+                        amapLocation.getProvince();//省信息
+                        amapLocation.getCity();//城市信息
+                        amapLocation.getDistrict();//城区信息
+                        amapLocation.getStreet();//街道信息
+                        amapLocation.getStreetNum();//街道门牌号信息
+                        amapLocation.getCityCode();//城市编码
+                        amapLocation.getAdCode();//地区编码
+                        Log.d("地区编码", "amapLocation.getAdCode()");
+                        amapLocation.getAoiName();//获取当前定位点的AOI信息
+                    } else {
+                        //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                        Log.e("AmapError", "location Error, ErrCode:"
+                                + amapLocation.getErrorCode() + ", errInfo:"
+                                + amapLocation.getErrorInfo());
+                    }
+                }
+            }
+        };
+    }
     private static String province;
     private static String city;
     //今日天气部分
@@ -96,7 +169,7 @@ public class WeatherAPI {
         BufferedReader reader = null;
         String line = null;
         try {
-            Log.d("yunxxxxx", "省份" + "1111111111");
+//            Log.d("yunxxxxx", "省份" + "1111111111");
             URL url = new URL(methodUrl);
             // 根据URL生成HttpURLConnection
             connection = (HttpURLConnection) url.openConnection();
@@ -120,7 +193,7 @@ public class WeatherAPI {
                 JSONObject casts2 = forecasts.getJSONArray("casts").getJSONObject(1);
 
 
-                Log.d("yunxxxxx", "省份" + "1111111111");
+//                Log.d("yunxxxxx", "省份" + "1111111111");
                 province = forecasts.getString("province");
                 city = forecasts.getString("city");
 
@@ -156,89 +229,3 @@ public class WeatherAPI {
 
 
 
-
-
-
-
-
-
-
-
-
-
-//public class WeatherAPI {
-//
-//    private String province = null;
-//    private String weather = null;
-//
-//    public String getWeatherHHH() {
-//            return weather;
-//    }
-//
-////    public String getProvince() {
-////        province = httpURLGETCase();
-////        return province;
-////    }
-//
-//    public String httpURLGETCase() {
-//        String methodUrl = "http://restapi.amap.com/v3/weather/weatherInfo?key=422c72aa44f79a33133dcfa8b21515b5&city=110101";
-//        HttpURLConnection connection = null;
-//        BufferedReader reader = null;
-//        String line = null;
-//        String prov = null;
-//        try {
-//            URL url = new URL(methodUrl);
-//            // 根据URL生成HttpURLConnection
-//            connection = (HttpURLConnection) url.openConnection();
-//            Log.d("Weather", "连接" + connection.toString());
-//            // 默认GET请求
-//            connection.setRequestMethod("GET");
-//            connection.connect();// 建立TCP连接
-//            Log.d("Weather", "if" + connection.getResponseCode());
-//            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-//                // 发送http请求
-//                reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-//                StringBuilder result = new StringBuilder();
-//                // 循环读取流
-//                while ((line = reader.readLine()) != null) {
-//                    result.append(line).append(System.getProperty("line.separator"));
-//                }
-////                    System.out.println(result.toString());
-//
-//                com.alibaba.fastjson.JSONObject mapTypes = JSON.parseObject(result.toString());
-////                    for (Object obj : mapTypes.keySet()){
-////                        System.out.println(obj+"的值为："+mapTypes.get(obj));
-////                    }
-//                //System.out.println("\n\n在lives中：");
-//                JSONObject lives = mapTypes.getJSONArray("lives").getJSONObject(0);
-////                    for (Object obj : lives.keySet()){
-////                        System.out.println(obj+"值为："+lives.get(obj));
-////                    }
-//                prov = lives.getString("province");
-//                Log.d("Weather", "prov" + prov);
-////                Integer adcode = lives.getInteger("adcode");
-////                Integer windpower = lives.getInteger("windpower");
-//
-//
-//
-////                    System.out.println("\n\n测试\n" + province + " " + adcode + "  风力：" + windpower);
-////                    System.out.println(province.getClass().toString() +"    "+ adcode.getClass().toString());
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-////        finally {
-////                try {
-////                    reader.close();
-////                } catch (IOException e) {
-////                    e.printStackTrace();
-////                }
-////                connection.disconnect();
-////        }
-//        return prov;
-//    }
-//
-//
-//
-//}

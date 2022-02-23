@@ -832,6 +832,7 @@ public class MainActivity extends AppCompatActivity {
 
             else if(  (orderWeatherActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4))))
                     || (orderWeatherActivity2.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) ) {
+
                 WeatherAPI wt = new WeatherAPI();
                 String province = wt.getProvince();
                 String city = wt.getCity();

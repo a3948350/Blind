@@ -53,6 +53,7 @@ dependencies {
     implementation files('libs\\tencent-mapsdk-android-official-release.4.4.7.94dc68b17.jar')
     implementation files('libs\\TencentLocationSDK_v7.4.2_r2209fa5e_20220125175142_release.jar')
     implementation files('libs\\tencent-mapsdk-android-official-release.4.4.7.94dc68b17.jar')
+    implementation files('src\\main\\jniLibs\\AMap_Location_V5.6.2_20211230.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
