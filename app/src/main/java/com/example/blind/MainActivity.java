@@ -694,7 +694,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TimeDate td = new TimeDate();
-                
+                String Month = td.getNowMonth();
+                String MDay  = td.getNowMDay();
+                String MWay  = td.getNowMWay();
+                String MHoure= td.getNowMHoure();
+                String MMinute= td.get
             }
         });
 
