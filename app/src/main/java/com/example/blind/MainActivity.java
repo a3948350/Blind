@@ -628,11 +628,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TimeDate td = new TimeDate();
+                String MYear =td.getNowMYear();
                 String Month = td.getNowMonth();
                 String MDay  = td.getNowMDay();
                 String MWay  = td.getNowMWay();
                 String MHoure= td.getNowMHoure();
-                String MMinute= td.get
+                String MMinute= td.getNowMMinute();
+                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
             }
         });
 
@@ -915,6 +917,15 @@ public class MainActivity extends AppCompatActivity {
             else if((orderTimedateActivity.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
                     || (orderTiemdateActivity2.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
                     || (orderTimedateActivity3.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))){
+
+                TimeDate td = new TimeDate();
+                String MYear =td.getNowMYear();
+                String Month = td.getNowMonth();
+                String MDay  = td.getNowMDay();
+                String MWay  = td.getNowMWay();
+                String MHoure= td.getNowMHoure();
+                String MMinute= td.getNowMMinute();
+                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
 
             }
 
