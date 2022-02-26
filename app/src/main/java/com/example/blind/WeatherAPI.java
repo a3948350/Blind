@@ -22,25 +22,8 @@ import java.net.HttpURLConnection;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import java.net.URL;
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Log;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Log;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
-
-import c.t.m.g.gl;
 
 public class WeatherAPI {
     private static String province;

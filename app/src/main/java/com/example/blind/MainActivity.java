@@ -21,10 +21,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.SpeechConstant;
@@ -179,9 +175,6 @@ public class MainActivity extends AppCompatActivity {
         // 检查sdk运行的必要条件权限
         checkPermissions();
 
-        //初始化定位
-        AMapLocationClient.updatePrivacyShow(getApplicationContext(), true, true);
-        AMapLocationClient.updatePrivacyAgree(getApplicationContext(), true);
 
 
 
