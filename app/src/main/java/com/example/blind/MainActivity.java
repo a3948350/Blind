@@ -81,32 +81,21 @@ public class MainActivity extends AppCompatActivity {
     Button btn_TimeDate;
     TextView recognizeResult;
     TextView recognizeState;
-
     int currentRequestId = 0;
-
     Handler handler;
 
-    //声明AMapLocationClient类对象
-    public AMapLocationClient mLocationClient = null;
-    //声明AMapLocationClientOption对象
-    public AMapLocationListener mLocationListener = new AMapLocationListener() {
-        @Override
-        public void onLocationChanged(AMapLocation aMapLocation) {
-            if (aMapLocation != null) {
-                if (aMapLocation.getErrorCode() == 0) {
-                //可在其中解析amapLocation获取相应内容。
-                    aMapLocation.getCityCode();//城市编码
-                }else {
-                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    Log.e("AmapError","location Error, ErrCode:"
-                            + aMapLocation.getErrorCode() + ", errInfo:"
-                            + aMapLocation.getErrorInfo());
-                }
-            }
-        }
-    };
-    //初始化定位
-    public AMapLocationClientOption mLocationOption = null;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     private static String TAG = MainActivity.class.getSimpleName();
@@ -171,43 +160,14 @@ public class MainActivity extends AppCompatActivity {
         return stringBuffer.toString();
     }
 
-//    public AMapLocationListener mLocationListener = new AMapLocationListener() {
-//        @Override
-//        public void onLocationChanged(AMapLocation amapLocation) {
-//            if (amapLocation != null) {
-//                if (amapLocation.getErrorCode() == 0) {
-//                    //定位成功回调信息，设置相关消息
-//                    amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
-//                    amapLocation.getLatitude();//获取纬度
-//                    amapLocation.getLongitude();//获取经度
-//                    amapLocation.getAccuracy();//获取精度信息
-//                    amapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
-//                    amapLocation.getCountry();//国家信息
-//                    amapLocation.getProvince();//省信息
-//                    amapLocation.getCity();//城市信息
-//                    amapLocation.getDistrict();//城区信息
-//                    amapLocation.getStreet();//街道信息
-//                    amapLocation.getStreetNum();//街道门牌号信息
-//                    amapLocation.getCityCode();//城市编码
-//                    amapLocation.getAdCode();//地区编码
-//                    amapLocation.getAoiName();//获取当前定位点的AOI信息
-//                } else {
-//                    //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-//                    Log.e("AmapError", "location Error, ErrCode:"
-//                            + amapLocation.getErrorCode() + ", errInfo:"
-//                            + amapLocation.getErrorInfo());
-//                }
-//            }
-//        }
-//    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         SpeechUtility.createUtility(this, SpeechConstant.APPID +"=8f27a48e");
         setContentView(R.layout.activity_main);
-
-
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -224,32 +184,8 @@ public class MainActivity extends AppCompatActivity {
         AMapLocationClient.updatePrivacyShow(getApplicationContext(), true, true);
         AMapLocationClient.updatePrivacyAgree(getApplicationContext(), true);
 
-        //初始化定位
-        try {
-            mLocationClient = new AMapLocationClient(getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //设置定位回调监听
-        mLocationClient.setLocationListener(mLocationListener);
 
-        mLocationOption = new AMapLocationClientOption();
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
 
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
-
-        //获取一次定位结果：
-        //该方法默认为false。
-        mLocationOption.setOnceLocation(true);
-
-        //获取最近3s内精度最高的一次定位结果：
-        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
-        mLocationOption.setOnceLocationLatest(true);
-
-        mLocationClient.setLocationOption(mLocationOption);
-        mLocationClient.startLocation();
 
         /************************语音识别部分************************/
         // 用户配置：需要在控制台申请相关的账号;
@@ -661,7 +597,6 @@ public class MainActivity extends AppCompatActivity {
                 WeatherAPI wt = new WeatherAPI();
                 String province = wt.getProvince();
                 String city = wt.getCity();
-
                 String weathertaday = wt.gettadayWeather();
                 String temperaturetaday= wt.gettadayTemperature();
                 String winddirectiontaday = wt.gettadayWinddirection();
@@ -685,7 +620,6 @@ public class MainActivity extends AppCompatActivity {
 
                 mTts.startSpeaking(province+city+taday+wait+textweather+weathertaday+wait+temperature+temperaturetaday+degree+wait+winddirection+winddirectiontaday+wait+windpower+windpowertaday+windpowerstrength
                         +wait+tomorrow+weathertomorrow+wait+temperature+temperaturetomorrow+degree+wait+winddirection+winddirectiontomorrow+wait+windpower+windpowertomorrow+windpowerstrength, mSynListener);
-
             }
         });
 
