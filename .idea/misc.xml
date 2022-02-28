@@ -3,21 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Blind/app/src/main/res/layout/activity_main.xml" value="0.21422101449275363" />
+        <entry key="..\:/Blind/app/src/main/res/layout/activity_call.xml" value="0.22" />
+        <entry key="..\:/Blind/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
         <entry key="..\:/android/andorid_project/app/src/main/res/drawable/list_bg_color.xml" value="0.23958333333333334" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_call.xml" value="0.36614583333333334" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_face_identify.xml" value="0.2234375" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_main.xml" value="0.3515625" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_main2.xml" value="0.33559782608695654" />
-        <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_music.xml" value="0.33" />
-        <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_navigation.xml" value="0.33" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_send.xml" value="0.36614583333333334" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_test.xml" value="0.36614583333333334" />
-        <entry key="..\:/android/andorid_project/app/src/main/res/layout/activity_weather.xml" value="0.3233695652173913" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/content_main.xml" value="0.2046875" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/fragment_first.xml" value="0.33559782608695654" />
         <entry key="..\:/android/andorid_project/app/src/main/res/layout/fragment_second.xml" value="0.33559782608695654" />
-        <entry key="..\:/android/andorid_project/app/src/main/res/layout/layout_list_view.xml" value="0.22239583333333332" />
         <entry key="..\:/android/andorid_project/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.23958333333333334" />
       </map>
     </option>

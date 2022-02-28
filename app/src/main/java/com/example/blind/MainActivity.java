@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn_Navigation;
     Button btn_WeatherActivity;
     Button btn_Music;
+    Button btn_TimeDate;
     TextView recognizeResult;
     TextView recognizeState;
     int currentRequestId = 0;
@@ -573,7 +574,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button button = findViewById(R.id.button3);
+        Button button = findViewById(R.id.btn_TimeDate);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -615,7 +616,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        btn_TimeDate = findViewById(R.id.btn_TimeDate);
+        btn_TimeDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimeDate td = new TimeDate();
+                String MYear =td.getNowMYear();
+                String Month = td.getNowMonth();
+                String MDay  = td.getNowMDay();
+                String MWay  = td.getNowMWay();
+                String MHoure= td.getNowMHoure();
+                String MMinute= td.getNowMMinute();
+                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
+            }
+        });
 
         btn_Navigation = findViewById(R.id.btn_Navigation);
         btn_Navigation.setOnClickListener(new View.OnClickListener() {
@@ -835,6 +849,9 @@ public class MainActivity extends AppCompatActivity {
         String orderNavigationActivity = "导航";
         String orderWeatherActivity="天气";
         String orderWeatherActivity2="天气预报";
+        String orderTimedateActivity="时间";
+        String orderTiemdateActivity2="日期";
+        String orderTimedateActivity3="时间和日期";
         String result = Util.str2HexStr(order);
 
         if(result == null || result.length() <= 4) {
@@ -889,6 +906,20 @@ public class MainActivity extends AppCompatActivity {
                 String windpowerstrength = "级";
                 mTts.startSpeaking(province+city+taday+wait+textweather+weathertaday+wait+temperature+temperaturetaday+degree+wait+winddirection+winddirectiontaday+wait+windpower+windpowertaday+windpowerstrength
                         +wait+tomorrow+weathertomorrow+wait+temperature+temperaturetomorrow+degree+wait+winddirection+winddirectiontomorrow+wait+windpower+windpowertomorrow+windpowerstrength, mSynListener);
+            }
+            else if((orderTimedateActivity.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
+                    || (orderTiemdateActivity2.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
+                    || (orderTimedateActivity3.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))){
+
+                TimeDate td = new TimeDate();
+                String MYear =td.getNowMYear();
+                String Month = td.getNowMonth();
+                String MDay  = td.getNowMDay();
+                String MWay  = td.getNowMWay();
+                String MHoure= td.getNowMHoure();
+                String MMinute= td.getNowMMinute();
+                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
+
             }
 
             else if(orderNavigationActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
