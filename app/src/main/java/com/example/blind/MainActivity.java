@@ -21,6 +21,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.SpeechConstant;
@@ -79,16 +83,6 @@ public class MainActivity extends AppCompatActivity {
     TextView recognizeState;
     int currentRequestId = 0;
     Handler handler;
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -160,6 +154,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //隐私政策内容合规
+        try{
+            AMapLocationClient.updatePrivacyShow(this, true, true);
+            AMapLocationClient.updatePrivacyAgree(this,true);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         super.onCreate(savedInstanceState);
         SpeechUtility.createUtility(this, SpeechConstant.APPID +"=8f27a48e");
@@ -168,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
 
         recognizeResult = findViewById(R.id.textViewMainRecognizeResult);
         recognizeState = findViewById(R.id.textViewMainRecognizeState);
@@ -387,10 +389,6 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public void onVoiceFlowStartRecognize(AudioRecognizeRequest request, int seq) {
-
-
-
-
                 AAILogger.info(logger, "onVoiceFlowStartRecognize.. seq = {}", seq);
                 handler.post(new Runnable() {
                     @Override
@@ -587,49 +585,56 @@ public class MainActivity extends AppCompatActivity {
         btn_WeatherActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WeatherAPI wt = new WeatherAPI();
-                String province = wt.getProvince();
-                String city = wt.getCity();
-                String weathertaday = wt.gettadayWeather();
-                String temperaturetaday= wt.gettadayTemperature();
-                String winddirectiontaday = wt.gettadayWinddirection();
-                String windpowertaday = wt.gettadayWindpower();
 
-                String weathertomorrow = wt.gettomorrowWeather();
-                String temperaturetomorrow = wt.gettomorrowTemperature();
-                String winddirectiontomorrow = wt.gettomorrowWinddirection();
-                String windpowertomorrow = wt.gettomorrowWindpower();
+                WeatherAPI wt = null;
+                try {
+                    wt = new WeatherAPI(MainActivity.this);
 
-                String taday = "今日：";
-                String tomorrow = "明日天气为：";
-                String wait = "。";
-                String textweather = "天气为:";
-                String temperature = "温度为：";
-                String degree = "摄氏度";
-                String winddirection = "风向为：";
-                String windpower = "风力为：";
-                String windpowerstrength = "级";
+                    String province = wt.getProvince();
+                    String city = wt.getCity();
+                    String weathertaday = wt.gettadayWeather();
+                    String temperaturetaday= wt.gettadayTemperature();
+                    String winddirectiontaday = wt.gettadayWinddirection();
+                    String windpowertaday = wt.gettadayWindpower();
+
+                    String weathertomorrow = wt.gettomorrowWeather();
+                    String temperaturetomorrow = wt.gettomorrowTemperature();
+                    String winddirectiontomorrow = wt.gettomorrowWinddirection();
+                    String windpowertomorrow = wt.gettomorrowWindpower();
+
+                    String taday = "今日：";
+                    String tomorrow = "明日天气为：";
+                    String wait = "。";
+                    String textweather = "天气为:";
+                    String temperature = "温度为：";
+                    String degree = "摄氏度";
+                    String winddirection = "风向为：";
+                    String windpower = "风力为：";
+                    String windpowerstrength = "级";
 
 
-                mTts.startSpeaking(province+city+taday+wait+textweather+weathertaday+wait+temperature+temperaturetaday+degree+wait+winddirection+winddirectiontaday+wait+windpower+windpowertaday+windpowerstrength
-                        +wait+tomorrow+weathertomorrow+wait+temperature+temperaturetomorrow+degree+wait+winddirection+winddirectiontomorrow+wait+windpower+windpowertomorrow+windpowerstrength, mSynListener);
+                    mTts.startSpeaking(province + city + taday+wait+textweather+weathertaday+wait+temperature+temperaturetaday+degree+wait+winddirection+winddirectiontaday+wait+windpower+windpowertaday+windpowerstrength
+                            +wait+tomorrow+weathertomorrow+wait+temperature+temperaturetomorrow+degree+wait+winddirection+winddirectiontomorrow+wait+windpower+windpowertomorrow+windpowerstrength, mSynListener);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         btn_TimeDate = findViewById(R.id.btn_TimeDate);
-        btn_TimeDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimeDate td = new TimeDate();
-                String MYear =td.getNowMYear();
-                String Month = td.getNowMonth();
-                String MDay  = td.getNowMDay();
-                String MWay  = td.getNowMWay();
-                String MHoure= td.getNowMHoure();
-                String MMinute= td.getNowMMinute();
-                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
-            }
-        });
+//        btn_TimeDate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+////            public void onClick(View v) {
+////                TimeDate td = new TimeDate();
+////                String MYear =td.getNowMYear();
+////                String Month = td.getNowMonth();
+////                String MDay  = td.getNowMDay();
+////                String MWay  = td.getNowMWay();
+////                String MHoure= td.getNowMHoure();
+////                String MMinute= td.getNowMMinute();
+////                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
+////            }
+//        });
 
         btn_Navigation = findViewById(R.id.btn_Navigation);
         btn_Navigation.setOnClickListener(new View.OnClickListener() {
@@ -880,45 +885,51 @@ public class MainActivity extends AppCompatActivity {
             else if(  (orderWeatherActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4))))
                     || (orderWeatherActivity2.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) ) {
 
-                WeatherAPI wt = new WeatherAPI();
-                String province = wt.getProvince();
-                String city = wt.getCity();
+                WeatherAPI wt = null;
+                try {
+                    wt = new WeatherAPI(MainActivity.this);
+
+                    String province = wt.getProvince();
+                    String city = wt.getCity();
+                    String weathertaday = wt.gettadayWeather();
+                    String temperaturetaday= wt.gettadayTemperature();
+                    String winddirectiontaday = wt.gettadayWinddirection();
+                    String windpowertaday = wt.gettadayWindpower();
+
+                    String weathertomorrow = wt.gettomorrowWeather();
+                    String temperaturetomorrow = wt.gettomorrowTemperature();
+                    String winddirectiontomorrow = wt.gettomorrowWinddirection();
+                    String windpowertomorrow = wt.gettomorrowWindpower();
+
+                    String taday = "今日：";
+                    String tomorrow = "明日天气为：";
+                    String wait = "。";
+                    String textweather = "天气为:";
+                    String temperature = "温度为：";
+                    String degree = "摄氏度";
+                    String winddirection = "风向为：";
+                    String windpower = "风力为：";
+                    String windpowerstrength = "级";
 
 
-                String weathertaday = wt.gettadayWeather();
-                String temperaturetaday= wt.gettadayTemperature();
-                String winddirectiontaday = wt.gettadayWinddirection();
-                String windpowertaday = wt.gettadayWindpower();
-
-                String weathertomorrow = wt.gettomorrowWeather();
-                String temperaturetomorrow = wt.gettomorrowTemperature();
-                String winddirectiontomorrow = wt.gettomorrowWinddirection();
-                String windpowertomorrow = wt.gettomorrowWindpower();
-
-                String taday = "今日：";
-                String tomorrow = "明日天气为：";
-                String wait = "。";
-                String textweather = "天气为:";
-                String temperature = "温度为：";
-                String degree = "摄氏度";
-                String winddirection = "风向为：";
-                String windpower = "风力为：";
-                String windpowerstrength = "级";
-                mTts.startSpeaking(province+city+taday+wait+textweather+weathertaday+wait+temperature+temperaturetaday+degree+wait+winddirection+winddirectiontaday+wait+windpower+windpowertaday+windpowerstrength
-                        +wait+tomorrow+weathertomorrow+wait+temperature+temperaturetomorrow+degree+wait+winddirection+winddirectiontomorrow+wait+windpower+windpowertomorrow+windpowerstrength, mSynListener);
+                    mTts.startSpeaking(province + city + taday+wait+textweather+weathertaday+wait+temperature+temperaturetaday+degree+wait+winddirection+winddirectiontaday+wait+windpower+windpowertaday+windpowerstrength
+                            +wait+tomorrow+weathertomorrow+wait+temperature+temperaturetomorrow+degree+wait+winddirection+winddirectiontomorrow+wait+windpower+windpowertomorrow+windpowerstrength, mSynListener);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             else if((orderTimedateActivity.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
                     || (orderTiemdateActivity2.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
                     || (orderTimedateActivity3.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))){
-
-                TimeDate td = new TimeDate();
-                String MYear =td.getNowMYear();
-                String Month = td.getNowMonth();
-                String MDay  = td.getNowMDay();
-                String MWay  = td.getNowMWay();
-                String MHoure= td.getNowMHoure();
-                String MMinute= td.getNowMMinute();
-                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
+//
+//                TimeDate td = new TimeDate();
+//                String MYear =td.getNowMYear();
+//                String Month = td.getNowMonth();
+//                String MDay  = td.getNowMDay();
+//                String MWay  = td.getNowMWay();
+//                String MHoure= td.getNowMHoure();
+//                String MMinute= td.getNowMMinute();
+//                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
 
             }
 

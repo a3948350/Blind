@@ -51,9 +51,6 @@
         android:theme="@style/Theme.Blind"
         android:requestLegacyExternalStorage="true">
         <activity
-            android:name=".getlocation"
-            android:exported="false" />
-        <activity
             android:name=".MusicActivity"
             android:exported="true" />
         <activity
@@ -88,28 +85,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- <service android:name=".service.MyIntentService"/> -->
-        <service android:name="com.tencent.cloud.qcloudasrsdk.recorder.service.QCloudAudioMp3RecoderService" />
-        //天气播报部分用到的服务
-        <service android:name="com.amap.api.location.APSService"></service>
-        <meta-data android:name="com.amap.api.v2.apikey" android:value="411b438b2d6a0a25581fa04db8d9a838">
-        </meta-data>
-
-        <meta-data
-            android:name="TencentMapSDK"
-            android:value="INCBZ-74IEJ-RAXFF-F3VRZ-Q6W5F-ZFF5I" />
-
 
         //天气播报部分用到的
-            android:icon="@drawable/icon"
-            android:label="@string/app_name" >
         <meta-data
-                android:name="com.amap.api.v2.apikey"
-                android:value="411b438b2d6a0a25581fa04db8d9a838"/>
+            android:name="TencentMapSDK"
+            android:value="INCBZ-74IEJ-RAXFF-F3VRZ-Q6W5F-ZFF5I"
+            android:icon="@drawable/icon"
+            android:label="@string/app_name" />
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="411b438b2d6a0a25581fa04db8d9a838"/>
 
-
-
-
-
+        <service android:name="com.amap.api.location.APSService" />
+        <service android:name="com.tencent.cloud.qcloudasrsdk.recorder.service.QCloudAudioMp3RecoderService" />
     </application>
 
 </manifest>
