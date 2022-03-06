@@ -572,12 +572,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button button = findViewById(R.id.btn_TimeDate);
-        button.setOnClickListener(new View.OnClickListener() {
+        btn_TimeDate= findViewById(R.id.btn_TimeDate);
+        btn_TimeDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, test.class);
-                startActivity(intent);
+
+                TimeDate td = null;
+                try {
+                    td = new TimeDate();
+                    String MYear = td.getNowMYear();
+                    String Month = td.getNowMonth();
+                    String MDay = td.getNowMDay();
+                    String MWay = td.getNowMWay();
+                    String MHoure = td.getNowMHoure();
+                    String MMinute = td.getNowMMinute();
+                    mTts.startSpeaking(MYear + Month + MDay + MWay + MHoure + MMinute, mSynListener);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -621,19 +633,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_TimeDate = findViewById(R.id.btn_TimeDate);
+//        btn_TimeDate = findViewById(R.id.btn_TimeDate);
 //        btn_TimeDate.setOnClickListener(new View.OnClickListener() {
 //            @Override
-////            public void onClick(View v) {
-////                TimeDate td = new TimeDate();
-////                String MYear =td.getNowMYear();
-////                String Month = td.getNowMonth();
-////                String MDay  = td.getNowMDay();
-////                String MWay  = td.getNowMWay();
-////                String MHoure= td.getNowMHoure();
-////                String MMinute= td.getNowMMinute();
-////                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
-////            }
+//            public void onClick(View v) {
+//                TimeDate td = new TimeDate();
+//                String MYear =td.getNowMYear();
+//                String Month = td.getNowMonth();
+//                String MDay  = td.getNowMDay();
+//                String MWay  = td.getNowMWay();
+//                String MHoure= td.getNowMHoure();
+//                String MMinute= td.getNowMMinute();
+//                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
+//            }
 //        });
 
         btn_Navigation = findViewById(R.id.btn_Navigation);
@@ -854,9 +866,9 @@ public class MainActivity extends AppCompatActivity {
         String orderNavigationActivity = "导航";
         String orderWeatherActivity="天气";
         String orderWeatherActivity2="天气预报";
-        String orderTimedateActivity="时间";
-        String orderTiemdateActivity2="日期";
-        String orderTimedateActivity3="时间和日期";
+        String orderTimeDateActivity="时间";
+        String orderTimeDateActivity2="日期";
+        String orderTimeDateActivity3="时间和日期";
         String result = Util.str2HexStr(order);
 
         if(result == null || result.length() <= 4) {
@@ -918,18 +930,23 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            else if((orderTimedateActivity.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
-                    || (orderTiemdateActivity2.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
-                    || (orderTimedateActivity3.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))){
-//
-//                TimeDate td = new TimeDate();
-//                String MYear =td.getNowMYear();
-//                String Month = td.getNowMonth();
-//                String MDay  = td.getNowMDay();
-//                String MWay  = td.getNowMWay();
-//                String MHoure= td.getNowMHoure();
-//                String MMinute= td.getNowMMinute();
-//                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
+            else if((orderTimeDateActivity.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
+                    || (orderTimeDateActivity2.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))
+                    || (orderTimeDateActivity3.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))){
+
+                TimeDate td = null;
+                try {
+                    td = new TimeDate();
+                    String MYear = td.getNowMYear();
+                    String Month = td.getNowMonth();
+                    String MDay = td.getNowMDay();
+                    String MWay = td.getNowMWay();
+                    String MHoure = td.getNowMHoure();
+                    String MMinute = td.getNowMMinute();
+                    mTts.startSpeaking(MYear + Month + MDay + MWay + MHoure + MMinute, mSynListener);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
 
             }
 
