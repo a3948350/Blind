@@ -580,12 +580,12 @@ public class MainActivity extends AppCompatActivity {
                 TimeDate td = null;
                 try {
                     td = new TimeDate();
-                    String MYear = td.getNowMYear();
-                    String Month = td.getNowMonth();
-                    String MDay = td.getNowMDay();
-                    String MWay = td.getNowMWay();
-                    String MHoure = td.getNowMHoure();
-                    String MMinute = td.getNowMMinute();
+                    String MYear = td.getMYear();
+                    String Month = td.getMonth();
+                    String MDay = td.getMDay();
+                    String MWay = td.getMWay();
+                    String MHoure = td.getMHours();
+                    String MMinute = td.getMMinute();
                     mTts.startSpeaking(MYear + Month + MDay + MWay + MHoure + MMinute, mSynListener);
                 } catch (Exception e){
                     e.printStackTrace();
@@ -779,6 +779,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private SynthesizerListener mSynListener = new SynthesizerListener() {
         // 会话结束回调接口，没有错误时，error为null
+        @SuppressLint("LongLogTag")
         public void onCompleted(SpeechError error) {
             if (error != null) {
                 Log.d("mySynthesiezer complete code:", error.getErrorCode()
@@ -937,12 +938,12 @@ public class MainActivity extends AppCompatActivity {
                 TimeDate td = null;
                 try {
                     td = new TimeDate();
-                    String MYear = td.getNowMYear();
-                    String Month = td.getNowMonth();
-                    String MDay = td.getNowMDay();
-                    String MWay = td.getNowMWay();
-                    String MHoure = td.getNowMHoure();
-                    String MMinute = td.getNowMMinute();
+                    String MYear = td.getMYear();
+                    String Month = td.getMonth();
+                    String MDay = td.getMDay();
+                    String MWay = td.getMWay();
+                    String MHoure = td.getMHours();
+                    String MMinute = td.getMMinute();
                     mTts.startSpeaking(MYear + Month + MDay + MWay + MHoure + MMinute, mSynListener);
                 } catch (Exception e){
                     e.printStackTrace();
