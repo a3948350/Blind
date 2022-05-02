@@ -554,7 +554,7 @@ public class MainActivity extends AppCompatActivity {
         btn_CallActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                texts = "跳转至语音拨打，请输入需要拨打手机号码";
+                texts = "跳转至语音拨打，请输入需要拨打的手机号码";
                 mTts.startSpeaking(texts, mSynListener);
                 Intent intentActivityCall = new Intent(MainActivity.this, CallActivity.class);
                 startActivity(intentActivityCall);
