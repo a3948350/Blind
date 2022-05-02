@@ -5,18 +5,30 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.location.Location;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechSynthesizer;
+import com.iflytek.cloud.SynthesizerListener;
 import com.tencent.map.geolocation.TencentLocation;
 import com.tencent.map.geolocation.TencentLocationListener;
 import com.tencent.map.geolocation.TencentLocationManager;
@@ -30,6 +42,7 @@ import com.tencent.tencentmap.mapsdk.maps.model.BitmapDescriptorFactory;
 import com.tencent.tencentmap.mapsdk.maps.model.LatLng;
 import com.tencent.tencentmap.mapsdk.maps.model.MyLocationStyle;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,6 +56,21 @@ public class NavigationActivity extends AppCompatActivity implements
     protected UiSettings mapUiSettings;
     private MyLocationStyle locationStyle;
     private LocationSource.OnLocationChangedListener locationChangedListener;
+
+    private Button btn_Recognize;
+
+    private String Location;
+    private String City;
+    private String District;
+    private String Street;
+    private String Town;
+    private String Name;
+
+    private String texts;
+
+    // 语音合成对象
+    private SpeechSynthesizer mTts;
+    private static String TAG = NavigationActivity.class.getSimpleName();
 
     final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
@@ -86,12 +114,57 @@ public class NavigationActivity extends AppCompatActivity implements
         //建立定位
         initLocation();
 
+        // 语音合成 1.创建SpeechSynthesizer对象, 第二个参数：本地合成时传InitListener
+        mTts = SpeechSynthesizer.createSynthesizer(NavigationActivity.this,
+                mTtsInitListener);
+
         //SDK版本4.3.5新增内置定位标点击回调监听
         tencentMap.setMyLocationClickListener(new TencentMap.OnMyLocationClickListener() {
             @Override
             public boolean onMyLocationClicked(LatLng latLng) {
                 Toast.makeText(NavigationActivity.this, "内置定位标点击回调", Toast.LENGTH_SHORT).show();
                 return true;
+            }
+        });
+
+        GestureDetector gestureDetector = new GestureDetector(NavigationActivity.this,new GestureDetector.SimpleOnGestureListener(){
+            /**
+             * 发生确定的单击时执行
+             * @param e
+             * @return
+             */
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {//单击事件
+                Toast.makeText(NavigationActivity.this,"这是单击事件", Toast.LENGTH_SHORT).show();
+                String address = City + " " + District + "," + Street + " " + Town + "," + Name;
+                Log.d("Nav","address:" + address);
+                texts = address;
+                mTts.startSpeaking("当前位置是：" + texts, mSynListener);
+                return super.onSingleTapConfirmed(e);
+            }
+
+            /**
+             * 双击发生时的通知
+             * @param e
+             * @return
+             */
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {//双击事件下一首
+                Toast.makeText(NavigationActivity.this,"这是双击事件",Toast.LENGTH_SHORT).show();
+                texts = "已返回主界面";
+                mTts.startSpeaking(texts,mSynListener);
+                mapView.onDestroy();
+                Intent intent = new Intent(NavigationActivity.this,MainActivity.class);
+                startActivity(intent);
+                return super.onDoubleTap(e);
+            }
+        });
+
+        btn_Recognize = findViewById(R.id.btn_NavigationRecognize);
+        btn_Recognize.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureDetector.onTouchEvent(event);
             }
         });
 
@@ -153,7 +226,15 @@ public class NavigationActivity extends AppCompatActivity implements
             Location location = new Location(tencentLocation.getProvider());
             //设置经纬度以及精度
             location.setLatitude(tencentLocation.getLatitude());
+//            Log.d("Nav","经度：" + tencentLocation.getLatitude());
             location.setLongitude(tencentLocation.getLongitude());
+//            Log.d("Nav","纬度：" + tencentLocation.getLongitude());
+            Location = tencentLocation.toString();
+            City = tencentLocation.getCity();
+            District = tencentLocation.getDistrict();
+            Street = tencentLocation.getStreet();
+            Town = tencentLocation.getTown();
+            Name = tencentLocation.getName();
             location.setAccuracy(tencentLocation.getAccuracy());
             locationChangedListener.onLocationChanged(location);
 
@@ -286,4 +367,66 @@ public class NavigationActivity extends AppCompatActivity implements
         super.onRestart();
         mapView.onRestart();
     }
+
+    /**
+     * 语音合成监听
+     */
+    private SynthesizerListener mSynListener = new SynthesizerListener() {
+        // 会话结束回调接口，没有错误时，error为null
+        public void onCompleted(SpeechError error) {
+            if (error != null) {
+                Log.d("mySynthesiezer complete code:", error.getErrorCode()
+                        + "");
+            } else {
+                Log.d("mySynthesiezer complete code:", "0");
+            }
+        }
+
+        // 缓冲进度回调
+        // percent为缓冲进度0~100，beginPos为缓冲音频在文本中开始位置，endPos表示缓冲音频在文本中结束位置，info为附加信息。
+        public void onBufferProgress(int percent, int beginPos, int endPos,
+                                     String info) {
+        }
+
+        // 开始播放
+        public void onSpeakBegin() {
+        }
+
+        // 暂停播放
+        public void onSpeakPaused() {
+        }
+
+        // 播放进度回调
+        // percent为播放进度0~100,beginPos为播放音频在文本中开始位置，endPos表示播放音频在文本中结束位置.
+        public void onSpeakProgress(int percent, int beginPos, int endPos) {
+        }
+
+        // 恢复播放回调接口
+        public void onSpeakResumed() {
+        }
+
+        // 会话事件回调接口
+        public void onEvent(int arg0, int arg1, int arg2, Bundle arg3) {
+        }
+    };
+
+    /**
+     * 初始化语音合成监听。
+     */
+    private InitListener mTtsInitListener = new InitListener() {
+        @SuppressLint("ShowToast")
+        @Override
+        public void onInit(int code) {
+            Log.d(TAG, "InitListener init() code = " + code);
+            if (code != ErrorCode.SUCCESS) {
+                // showTip("初始化失败,错误码：" + code);
+                Toast.makeText(getApplicationContext(), "初始化失败,错误码：" + code,
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // 初始化成功，之后可以调用startSpeaking方法
+                // 注：有的开发者在onCreate方法中创建完合成对象之后马上就调用startSpeaking进行合成，
+                // 正确的做法是将onCreate中的startSpeaking调用移至这里
+            }
+        }
+    };
 }

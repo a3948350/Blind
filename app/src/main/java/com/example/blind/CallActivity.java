@@ -75,12 +75,8 @@ public class CallActivity extends AppCompatActivity {
     Handler handler;
 
     private static String TAG = CallActivity.class.getSimpleName();
-    //是否开始录音标记
-    private boolean orderflag = true;
     // 语音合成对象
     private SpeechSynthesizer mTts;
-    // 默认发音人
-    private String voicer = "xiaoyan";
     //  语音合成播报内容
     String texts = "";
 
