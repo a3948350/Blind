@@ -651,11 +651,13 @@ public class CallActivity extends AppCompatActivity {
     }
 
     private void orderRead(String order) {
+        Log.d("ycm","msg:" + order);
         String orderYes = "是";
         String orderYes2 = "是的";
         String orderNo = "否";
         String orderBack = "返回";
         String result = Util.str2HexStr(order);
+        Log.d("ycm","result:" + result);
 
         if(result == null) {
             texts = "未听清楚命令，请重新输入";
@@ -664,7 +666,7 @@ public class CallActivity extends AppCompatActivity {
 
         else {
             if(step == 1) {
-                et_Phone.setText(recognizeResult.getText());
+                et_Phone.setText(order);
                 texts = "是否拨打手机号码：";
                 mTts.startSpeaking(texts+et_Phone.getText().toString()+"或者返回主界面", mSynListener);
                 step = 2;

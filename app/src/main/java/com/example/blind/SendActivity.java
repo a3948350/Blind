@@ -208,7 +208,7 @@ public class SendActivity extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        et_SendMessage.setText(msg);
+//                        et_SendMessage.setText(msg);
                     }
                 });
 
@@ -231,7 +231,7 @@ public class SendActivity extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        et_SendMessage.setText(msg);
+//                        et_SendMessage.setText(msg);
                     }
                 });
             }
@@ -296,7 +296,7 @@ public class SendActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         //recognizeState.setText(getString(R.string.start_record));
-                        et_SendMessage.setText("");
+//                        et_SendMessage.setText("");
                     }
                 });
                 //为本次录音创建缓存一个文件
@@ -736,9 +736,10 @@ public class SendActivity extends AppCompatActivity {
         else {
             if(step == 1) {
                 texts = "发送短信号码是否为：";
-                mTts.startSpeaking(texts+et_SendMessage.getText().toString()+"或者返回主界面", mSynListener);
+                mTts.startSpeaking(texts+order+"或者返回主界面", mSynListener);
+                Log.d("send","order:" + order);
                 step = 2;
-                et_SendNumber.setText(et_SendMessage.getText());
+                et_SendNumber.setText(order);
             }
 
             else if(step == 2 && orderNo.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
@@ -763,9 +764,22 @@ public class SendActivity extends AppCompatActivity {
             }
 
             else if(step == 3) {
-                texts = "短信内容是否为：";
-                mTts.startSpeaking(texts+et_SendMessage.getText().toString(), mSynListener);
-                step = 4;
+//                texts = "短信内容是否为：";
+//                mTts.startSpeaking(texts+et_SendMessage.getText().toString(), mSynListener);
+//                step = 4;
+                if (orderBack.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
+                    Intent intentBack = new Intent(SendActivity.this, MainActivity.class);
+                    step = 1;
+                    texts = "已返回主界面";
+                    mTts.startSpeaking(texts, mSynListener);
+                    startActivity(intentBack);
+                }
+                else {
+                    texts = "短信内容是否为：";
+                    mTts.startSpeaking(texts+order, mSynListener);
+                    et_SendMessage.setText(order);
+                    step = 4;
+                }
             }
 
             else if(step == 4 && orderNo.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
@@ -778,9 +792,10 @@ public class SendActivity extends AppCompatActivity {
                 if(ContextCompat.checkSelfPermission(SendActivity.this,Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(SendActivity.this, new String[]{Manifest.permission.SEND_SMS}, 1);
                 }
-
                 else {
                     Send();
+                    texts = "短信发送成功";
+                    mTts.startSpeaking(texts, mSynListener);
                 }
             }
 
