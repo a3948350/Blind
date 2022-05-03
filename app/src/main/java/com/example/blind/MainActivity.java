@@ -581,12 +581,18 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     td = new TimeDate();
                     String MYear = td.getMYear();
+                    Log.d("Date","Myear:" + MYear);
                     String Month = td.getMonth();
+                    Log.d("Date","Month:" + Month);
                     String MDay = td.getMDay();
+                    Log.d("Date","MDay:" + MDay);
                     String MWay = td.getMWay();
+                    Log.d("Date","MWay:" + MWay);
                     String MHoure = td.getMHours();
+                    Log.d("Date","MHoure:" + MHoure);
                     String MMinute = td.getMMinute();
-                    mTts.startSpeaking(MYear + Month + MDay + MWay + MHoure + MMinute, mSynListener);
+                    Log.d("Date","MMinute:" + MMinute);
+                    mTts.startSpeaking(MYear + "年" + Month + "月" + MDay + "日" + "星期" + MWay  + MHoure + "点" + MMinute + "分", mSynListener);
                 } catch (Exception e){
                     e.printStackTrace();
                 }
@@ -936,19 +942,25 @@ public class MainActivity extends AppCompatActivity {
                     || (orderTimeDateActivity3.equals(Util.hexStr2Str(result.substring(0,result.length()-4))))){
 
                 TimeDate td = null;
+
                 try {
                     td = new TimeDate();
                     String MYear = td.getMYear();
+                    Log.d("Date","Myear:" + MYear);
                     String Month = td.getMonth();
+                    Log.d("Date","Month:" + Month);
                     String MDay = td.getMDay();
+                    Log.d("Date","MDay:" + MDay);
                     String MWay = td.getMWay();
+                    Log.d("Date","MWay:" + MWay);
                     String MHoure = td.getMHours();
+                    Log.d("Date","MHoure:" + MHoure);
                     String MMinute = td.getMMinute();
-                    mTts.startSpeaking(MYear + Month + MDay + MWay + MHoure + MMinute, mSynListener);
+                    Log.d("Date","MMinute:" + MMinute);
+                    mTts.startSpeaking(MYear + "年" + Month + "月" + MDay + "日" + "星期" + MWay  + MHoure + "点" + MMinute + "分", mSynListener);
                 } catch (Exception e){
                     e.printStackTrace();
                 }
-
             }
 
             else if(orderNavigationActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {

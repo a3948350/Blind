@@ -24,7 +24,7 @@ allprojects {
         mavenCentral()
         google()
         maven {
-            url "http://maven.oa.com/nexus/content/repositories/jcenter/"
+            url "https://maven.oa.com/nexus/content/repositories/jcenter/"
 
         }
         maven {
