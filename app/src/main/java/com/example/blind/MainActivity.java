@@ -6,7 +6,9 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -59,6 +61,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.DataOutputStream;
 import java.lang.ref.WeakReference;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,6 +70,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -84,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     int currentRequestId = 0;
     Handler handler;
 
-
+    String SHA1;
 
 
 
@@ -171,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
         recognizeResult = findViewById(R.id.textViewMainRecognizeResult);
         recognizeState = findViewById(R.id.textViewMainRecognizeState);
         handler = new Handler(getMainLooper());
@@ -178,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
         // 检查sdk运行的必要条件权限
         checkPermissions();
 
-
-
+        SHA1 = sHA1(MainActivity.this);
+        Log.d("SHA1","SHA1:" + SHA1);
 
 
         /************************语音识别部分************************/
@@ -861,6 +867,32 @@ public class MainActivity extends AppCompatActivity {
             //starSpeech();
             mTts.startSpeaking(texts, mSynListener);
         }
+    }
+
+    public static String sHA1(Context context){
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), PackageManager.GET_SIGNATURES);
+            byte[] cert = info.signatures[0].toByteArray();
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            byte[] publicKey = md.digest(cert);
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < publicKey.length; i++) {
+                String appendString = Integer.toHexString(0xFF & publicKey[i])
+                        .toUpperCase(Locale.US);
+                if (appendString.length() == 1)
+                    hexString.append("0");
+                hexString.append(appendString);
+                hexString.append(":");
+            }
+            String result = hexString.toString();
+            return result.substring(0, result.length()-1);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
