@@ -524,7 +524,7 @@ public class SendActivity extends AppCompatActivity {
         // 语音合成 1.创建SpeechSynthesizer对象, 第二个参数：本地合成时传InitListener
         mTts = SpeechSynthesizer.createSynthesizer(SendActivity.this,
                 mTtsInitListener);
-
+        mTts.startSpeaking("跳转至语音短信，请先输入电话号码", mSynListener);
 
         et_SendNumber = findViewById(R.id.editTextSendNumber);
 
@@ -569,6 +569,7 @@ public class SendActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mTts.stopSpeaking();
                     if (aaiClient!=null) {
                         boolean taskExist = aaiClient.cancelAudioRecognize(currentRequestId);
                         AAILogger.info(logger, "taskExist=" + taskExist);
@@ -728,7 +729,7 @@ public class SendActivity extends AppCompatActivity {
         String orderBack = "返回";
         String result = Util.str2HexStr(order);
 
-        if(result == null) {
+        if(result == null || result.length() <= 4) {
             texts = "未听清楚命令，请重新输入";
             mTts.startSpeaking(texts, mSynListener);
         }

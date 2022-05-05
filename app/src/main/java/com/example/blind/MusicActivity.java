@@ -1,6 +1,7 @@
 package com.example.blind;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +32,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechSynthesizer;
+import com.iflytek.cloud.SynthesizerListener;
+
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +50,12 @@ public class MusicActivity extends AppCompatActivity {
     private ArrayList<Song> musics;
     private int num = 0;
     private int seq = 0;
+
+    private String texts;
+
+    // 语音合成对象
+    private SpeechSynthesizer mTts;
+    private static String TAG = NavigationActivity.class.getSimpleName();
 
     MediaPlayer m_music_player;
     Button btn_MusicRecognize = null;
@@ -85,6 +98,11 @@ public class MusicActivity extends AppCompatActivity {
 
         checkPermissions();
 
+        // 语音合成 1.创建SpeechSynthesizer对象, 第二个参数：本地合成时传InitListener
+        mTts = SpeechSynthesizer.createSynthesizer(MusicActivity.this,
+                mTtsInitListener);
+        mTts.startSpeaking("跳转至音乐播放", mSynListener);
+
         m_music_player = new MediaPlayer();
 
         initMusic();
@@ -100,10 +118,7 @@ public class MusicActivity extends AppCompatActivity {
                 if(m_music_player.isPlaying()){
                     m_music_player.stop();
                 }
-//                MyTextView name = findViewById(R.id.music_name);
-//                name.setText(musics.get(i).getTitle());
-//                TextView player = findViewById(R.id.music_player);
-//                player.setText(musics.get(i).getSinger());
+
                 m_music_player = new MediaPlayer();
                 m_music_player.reset();
                 m_music_player.setDataSource(path);
@@ -196,6 +211,8 @@ public class MusicActivity extends AppCompatActivity {
             @Override
             public void onLongPress(MotionEvent e) {//长按返回
                 m_music_player.stop();
+                texts = "已返回主界面";
+                mTts.startSpeaking(texts,mSynListener);
                 Intent intentBack = new Intent(MusicActivity.this, MainActivity.class);
                 startActivity(intentBack);
             }
@@ -295,4 +312,76 @@ public class MusicActivity extends AppCompatActivity {
             return list_view;
         }
     }
+    /**
+     * 语音合成监听
+     */
+    private SynthesizerListener mSynListener = new SynthesizerListener() {
+        // 会话结束回调接口，没有错误时，error为null
+        public void onCompleted(SpeechError error) {
+            if (error != null) {
+                Log.d("mySynthesiezer complete code:", error.getErrorCode()
+                        + "");
+            } else {
+                Log.d("mySynthesiezer complete code:", "0");
+            }
+        }
+
+        // 缓冲进度回调
+        // percent为缓冲进度0~100，beginPos为缓冲音频在文本中开始位置，endPos表示缓冲音频在文本中结束位置，info为附加信息。
+        public void onBufferProgress(int percent, int beginPos, int endPos,
+                                     String info) {
+        }
+
+        // 开始播放
+        public void onSpeakBegin() {
+        }
+
+        // 暂停播放
+        public void onSpeakPaused() {
+        }
+
+        // 播放进度回调
+        // percent为播放进度0~100,beginPos为播放音频在文本中开始位置，endPos表示播放音频在文本中结束位置.
+        public void onSpeakProgress(int percent, int beginPos, int endPos) {
+        }
+
+        // 恢复播放回调接口
+        public void onSpeakResumed() {
+        }
+
+        // 会话事件回调接口
+        public void onEvent(int arg0, int arg1, int arg2, Bundle arg3) {
+        }
+    };
+
+    /**
+     * 初始化语音合成监听。
+     */
+    private InitListener mTtsInitListener = new InitListener() {
+        @SuppressLint("ShowToast")
+        @Override
+        public void onInit(int code) {
+            Log.d(TAG, "InitListener init() code = " + code);
+            if (code != ErrorCode.SUCCESS) {
+                // showTip("初始化失败,错误码：" + code);
+                Toast.makeText(getApplicationContext(), "初始化失败,错误码：" + code,
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // 初始化成功，之后可以调用startSpeaking方法
+                // 注：有的开发者在onCreate方法中创建完合成对象之后马上就调用startSpeaking进行合成，
+                // 正确的做法是将onCreate中的startSpeaking调用移至这里
+            }
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        if (null != mTts) {
+            mTts.stopSpeaking();
+            // 退出时释放连接
+            mTts.destroy();
+        }
+        super.onDestroy();
+    }
+
 }

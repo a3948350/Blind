@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.telecom.Call;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -514,6 +515,7 @@ public class CallActivity extends AppCompatActivity {
         // 语音合成 1.创建SpeechSynthesizer对象, 第二个参数：本地合成时传InitListener
         mTts = SpeechSynthesizer.createSynthesizer(CallActivity.this,
                 mTtsInitListener);
+        mTts.startSpeaking("跳转至语音拨打，请输入需要拨打的手机号码", mSynListener);
 
         et_Phone = findViewById(R.id.editTextPhone);
 
@@ -546,6 +548,7 @@ public class CallActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mTts.stopSpeaking();
                     buttonDown(audioRecognizeResultlistener,audioRecognizeStateListener,audioRecognizeTimeoutListener);
                 }
                 else if(event.getAction() == MotionEvent.ACTION_UP) {
@@ -655,7 +658,7 @@ public class CallActivity extends AppCompatActivity {
         String result = Util.str2HexStr(order);
         Log.d("ycm","result:" + result);
 
-        if(result == null) {
+        if(result == null || result.length() <= 4) {
             texts = "未听清楚命令，请重新输入";
             mTts.startSpeaking(texts, mSynListener);
         }

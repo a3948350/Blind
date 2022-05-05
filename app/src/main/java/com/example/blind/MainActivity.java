@@ -561,7 +561,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 texts = "跳转至语音拨打，请输入需要拨打的手机号码";
-                mTts.startSpeaking(texts, mSynListener);
+//                mTts.startSpeaking(texts, mSynListener);
                 Intent intentActivityCall = new Intent(MainActivity.this, CallActivity.class);
                 startActivity(intentActivityCall);
             }
@@ -572,7 +572,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 texts = "跳转至语音短信，请先输入电话号码";
-                mTts.startSpeaking(texts, mSynListener);
+//                mTts.startSpeaking(texts, mSynListener);
                 Intent intentActivitySend = new Intent(MainActivity.this, SendActivity.class);
                 startActivity(intentActivitySend);
             }
@@ -645,26 +645,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        btn_TimeDate = findViewById(R.id.btn_TimeDate);
-//        btn_TimeDate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TimeDate td = new TimeDate();
-//                String MYear =td.getNowMYear();
-//                String Month = td.getNowMonth();
-//                String MDay  = td.getNowMDay();
-//                String MWay  = td.getNowMWay();
-//                String MHoure= td.getNowMHoure();
-//                String MMinute= td.getNowMMinute();
-//                mTts.startSpeaking(MYear+Month+MDay+MWay+MHoure+MMinute, mSynListener);
-//            }
-//        });
 
         btn_Navigation = findViewById(R.id.btn_Navigation);
         btn_Navigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentActivityNavigation = new Intent(MainActivity.this, NavigationActivity.class);
+                texts = "跳转至地图定位";
+//                mTts.startSpeaking(texts, mSynListener);
                 startActivity(intentActivityNavigation);
             }
         });
@@ -674,6 +662,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,MusicActivity.class);
+                texts = "跳转至音乐播放";
+//                mTts.startSpeaking(texts, mSynListener);
                 startActivity(intent);
             }
         });
@@ -683,6 +673,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mTts.stopSpeaking();
                     buttonDown(audioRecognizeResultlistener,audioRecognizeStateListener,audioRecognizeTimeoutListener);
                 }
                 else if(event.getAction() == MotionEvent.ACTION_UP) {
@@ -863,7 +854,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void step(){
         if (orderflag){
-            texts = "请长按屏幕中下方说出命令，松开屏幕以停止录音";
+            texts = "请按住屏幕中下方说出命令，松开屏幕以停止录音";
             //starSpeech();
             mTts.startSpeaking(texts, mSynListener);
         }
@@ -902,12 +893,15 @@ public class MainActivity extends AppCompatActivity {
         String orderCallActivity3 = "拨打电话";
         String orderSendActivity = "发短信";
         String orderSendActivity2 = "发送短信";
-        String orderNavigationActivity = "导航";
         String orderWeatherActivity="天气";
         String orderWeatherActivity2="天气预报";
         String orderTimeDateActivity="时间";
         String orderTimeDateActivity2="日期";
         String orderTimeDateActivity3="时间和日期";
+        String orderNavigationActivity1 = "地图定位";
+        String orderNavigationActivity2 = "定位";
+        String orderMusicActivity1 = "播放音乐";
+        String orderMusicActivity2 = "音乐";
         String result = Util.str2HexStr(order);
 
         if(result == null || result.length() <= 4) {
@@ -921,7 +915,7 @@ public class MainActivity extends AppCompatActivity {
                     || ( orderCallActivity3.equals(Util.hexStr2Str(result.substring(0,result.length()-4))) ) ) {
                 Intent intentCallActivity = new Intent(MainActivity.this, CallActivity.class);
                 texts = "跳转至语音拨打，请输入需要拨打的手机号码";
-                mTts.startSpeaking(texts, mSynListener);
+//                mTts.startSpeaking(texts, mSynListener);
                 startActivity(intentCallActivity);
             }
 
@@ -930,7 +924,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intentSendActivity = new Intent(MainActivity.this, SendActivity.class);
                 startActivity(intentSendActivity);
                 texts = "跳转至语音短信，请先输入电话号码";
-                mTts.startSpeaking(texts, mSynListener);
+//                mTts.startSpeaking(texts, mSynListener);
             }
 
             else if(  (orderWeatherActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4))))
@@ -995,11 +989,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            else if(orderNavigationActivity.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
-                Intent intentSendActivity = new Intent(MainActivity.this, NavigationActivity.class);
-                startActivity(intentSendActivity);
-                texts = "跳转至地图导航";
-                mTts.startSpeaking(texts, mSynListener);
+            else if(orderNavigationActivity1.equals(Util.hexStr2Str(result.substring(0, result.length()-4))) ||
+                    orderNavigationActivity2.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
+                Intent intentNavigationActivity = new Intent(MainActivity.this, NavigationActivity.class);
+                startActivity(intentNavigationActivity);
+                texts = "跳转至地图定位";
+//                mTts.startSpeaking(texts, mSynListener);
+            }
+
+            else if(orderMusicActivity1.equals(Util.hexStr2Str(result.substring(0, result.length()-4))) ||
+                    orderMusicActivity2.equals(Util.hexStr2Str(result.substring(0, result.length()-4)))) {
+                Intent intentMusicActivity = new Intent(MainActivity.this, MusicActivity.class);
+                startActivity(intentMusicActivity);
+                texts = "跳转至音乐播放";
+//                mTts.startSpeaking(texts, mSynListener);
             }
 
             else {
@@ -1024,155 +1027,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    /**
-//     * 初始化监听。
-//     */
-//    private InitListener mTtsInitListener = new InitListener() {
-//        @Override
-//        public void onInit(int code) {
-//            Log.d(TAG, "InitListener init() code = " + code);
-//            if (code != ErrorCode.SUCCESS) {
-//                //showTip("初始化失败,错误码：" + code + ",请点击网址https://www.xfyun.cn/document/error-code查询解决方案");
-//            } else {
-//                // 初始化成功，之后可以调用startSpeaking方法
-//                // 注：有的开发者在onCreate方法中创建完合成对象之后马上就调用startSpeaking进行合成，
-//                // 正确的做法是将onCreate中的startSpeaking调用移至这里
-//            }
-//        }
-//    };
-//
-//    /**
-//     * 参数设置
-//     *
-//     * @return
-//     */
-//    private void setParam() {
-//        // 清空参数
-//        mTts.setParameter(SpeechConstant.PARAMS, null);
-//        // 根据合成引擎设置相应参数
-//        if (mEngineType.equals(SpeechConstant.TYPE_CLOUD)) {
-//            mTts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD);
-//            // 支持实时音频返回，仅在 synthesizeToUri 条件下支持
-//            mTts.setParameter(SpeechConstant.TTS_DATA_NOTIFY, "1");
-//            //	mTts.setParameter(SpeechConstant.TTS_BUFFER_TIME,"1");
-//
-//            // 设置在线合成发音人
-//            mTts.setParameter(SpeechConstant.VOICE_NAME, voicer);
-//            //设置合成语速
-//            mTts.setParameter(SpeechConstant.SPEED, mSharedPreferences.getString("speed_preference", "50"));
-//            //设置合成音调
-//            mTts.setParameter(SpeechConstant.PITCH, mSharedPreferences.getString("pitch_preference", "50"));
-//            //设置合成音量
-//            mTts.setParameter(SpeechConstant.VOLUME, mSharedPreferences.getString("volume_preference", "50"));
-//        } else {
-//            mTts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_LOCAL);
-//            mTts.setParameter(SpeechConstant.VOICE_NAME, "");
-//
-//        }
-//
-//        //设置播放器音频流类型
-//        mTts.setParameter(SpeechConstant.STREAM_TYPE, mSharedPreferences.getString("stream_preference", "3"));
-//        // 设置播放合成音频打断音乐播放，默认为true
-//        mTts.setParameter(SpeechConstant.KEY_REQUEST_FOCUS, "false");
-//
-//        // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
-//        mTts.setParameter(SpeechConstant.AUDIO_FORMAT, "pcm");
-//        mTts.setParameter(SpeechConstant.TTS_AUDIO_PATH,
-//                getExternalFilesDir("msc").getAbsolutePath() + "/tts.pcm");
-//    }
-//
-//    /**
-//     * 合成回调监听。
-//     */
-//    private SynthesizerListener mTtsListener = new SynthesizerListener() {
-//
-//        @Override
-//        public void onSpeakBegin() {
-//            //showTip("开始播放");
-//        }
-//
-//        @Override
-//        public void onSpeakPaused() {
-//            //showTip("暂停播放");
-//        }
-//
-//        @Override
-//        public void onSpeakResumed() {
-//            //showTip("继续播放");
-//        }
-//
-//        @Override
-//        public void onBufferProgress(int percent, int beginPos, int endPos,
-//                                     String info) {
-//            // 合成进度
-//            Log.e("MscSpeechLog_", "percent =" + percent);
-//            mPercentForBuffering = percent;
-//            /* showTip(String.format(getString(R.string.tts_toast_format),
-//                    mPercentForBuffering, mPercentForPlaying)); */
-//        }
-//
-//        @Override
-//        public void onSpeakProgress(int percent, int beginPos, int endPos) {
-//            // 播放进度
-//            Log.e("MscSpeechLog_", "percent =" + percent);
-//            mPercentForPlaying = percent;
-//            /* showTip(String.format(getString(R.string.tts_toast_format),
-//                    mPercentForBuffering, mPercentForPlaying)); */
-//
-//            /* SpannableStringBuilder style = new SpannableStringBuilder(texts);
-//            Log.e(TAG, "beginPos = " + beginPos + "  endPos = " + endPos);
-//            style.setSpan(new BackgroundColorSpan(Color.RED), beginPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            ((EditText) findViewById(R.id.tts_text)).setText(style); */
-//        }
-//
-//        @Override
-//        public void onCompleted(SpeechError speechError) {
-//
-//        }
-//
-//        /* @Override
-//        public void onCompleted(SpeechError error) {
-//            showTip("播放完成");
-//            if (error != null) {
-//                showTip(error.getPlainDescription(true));
-//                return;
-//            }
-//        } */
-//
-//        @Override
-//        public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
-//            //	 以下代码用于获取与云端的会话id，当业务出错时将会话id提供给技术支持人员，可用于查询会话日志，定位出错原因
-//            //	 若使用本地能力，会话id为null
-//            if (SpeechEvent.EVENT_SESSION_ID == eventType) {
-//                String sid = obj.getString(SpeechEvent.KEY_EVENT_SESSION_ID);
-//                Log.d(TAG, "session id =" + sid);
-//            }
-//            // 当设置 SpeechConstant.TTS_DATA_NOTIFY 为1时，抛出buf数据
-//            if (SpeechEvent.EVENT_TTS_BUFFER == eventType) {
-//                byte[] buf = obj.getByteArray(SpeechEvent.KEY_EVENT_TTS_BUFFER);
-//                Log.e(TAG, "EVENT_TTS_BUFFER = " + buf.length);
-//                // 保存文件
-//                appendFile(pcmFile, buf);
-//            }
-//
-//        }
-//    };
-//
-//    /**
-//     * 给file追加数据
-//     */
-//    private void appendFile(File file, byte[] buffer) {
-//        try {
-//            if (!file.exists()) {
-//                boolean b = file.createNewFile();
-//            }
-//            RandomAccessFile randomFile = new RandomAccessFile(file, "rw");
-//            randomFile.seek(file.length());
-//            randomFile.write(buffer);
-//            randomFile.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 }

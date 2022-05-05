@@ -117,6 +117,7 @@ public class NavigationActivity extends AppCompatActivity implements
         // 语音合成 1.创建SpeechSynthesizer对象, 第二个参数：本地合成时传InitListener
         mTts = SpeechSynthesizer.createSynthesizer(NavigationActivity.this,
                 mTtsInitListener);
+        mTts.startSpeaking("跳转至地图定位", mSynListener);
 
         //SDK版本4.3.5新增内置定位标点击回调监听
         tencentMap.setMyLocationClickListener(new TencentMap.OnMyLocationClickListener() {
@@ -149,14 +150,13 @@ public class NavigationActivity extends AppCompatActivity implements
              * @return
              */
             @Override
-            public boolean onDoubleTap(MotionEvent e) {//双击事件下一首
+            public void onLongPress(MotionEvent e) {
                 Toast.makeText(NavigationActivity.this,"这是双击事件",Toast.LENGTH_SHORT).show();
                 texts = "已返回主界面";
                 mTts.startSpeaking(texts,mSynListener);
                 mapView.onDestroy();
                 Intent intent = new Intent(NavigationActivity.this,MainActivity.class);
                 startActivity(intent);
-                return super.onDoubleTap(e);
             }
         });
 
@@ -357,9 +357,14 @@ public class NavigationActivity extends AppCompatActivity implements
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        if (null != mTts) {
+            mTts.stopSpeaking();
+            // 退出时释放连接
+            mTts.destroy();
+        }
         mapView.onDestroy();
-//        mLocationManager.removeUpdates(this);
+        super.onDestroy();
+
     }
 
     @Override
